@@ -18,7 +18,7 @@
   /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
      a phone, whether the page being looked at is the current build or a cached
      one — the usual cause of "the buttons stopped working". */
-  const BUILD = '2026.08.26-4';
+  const BUILD = '2026.08.26-5';
 
   /* ---------------- i18n ---------------- */
   const T = {
@@ -57,6 +57,7 @@
       sheetCancel:'Annuler',
       sheetDesc:function(what,cur,tot){return 'Vous avez une session en cours : '+what+', question '+cur+' sur '+tot+'. Voulez-vous la reprendre ou repartir de zéro ?';},
       resumeSub:function(what,cur,tot){return what+' · question '+cur+'/'+tot;},
+      noStore:"Stockage du navigateur indisponible : votre progression sera perdue en fermant l'onglet. Désactivez le blocage des cookies ou la navigation privée pour la conserver.",
       mExam:'Examen blanc', mPractice:'Entraînement', mMistakes:'Révision des erreurs',
       oRandom:'toutes les questions mélangées', oSeq:'ordre officiel',
       srcT:"D'où viennent ces questions ?",
@@ -100,6 +101,7 @@
       sheetCancel:'Cancel',
       sheetDesc:function(what,cur,tot){return 'You have a session in progress: '+what+', question '+cur+' of '+tot+'. Resume it, or start again from scratch?';},
       resumeSub:function(what,cur,tot){return what+' · question '+cur+'/'+tot;},
+      noStore:'Browser storage is unavailable, so your progress will be lost when you close the tab. Turn off cookie blocking or private browsing to keep it.',
       mExam:'Mock exam', mPractice:'Practice', mMistakes:'Mistake review',
       oRandom:'all questions shuffled', oSeq:'official order',
       srcT:'Where do these questions come from?',
@@ -110,8 +112,34 @@
     }
   };
 
+  /* ---------------- Storage ----------------
+     localStorage is not always available. Safari with "Block All Cookies", some
+     private-browsing modes and embedded webviews make *even reading* it throw a
+     SecurityError. Every access goes through here, and falls back to an
+     in-memory store so the app keeps working for the session instead of dying
+     on the first line that touches it.                                        */
+  const memStore = {};
+  const store = {
+    get: function (k) {
+      try { return localStorage.getItem(k); }
+      catch (e) { return Object.prototype.hasOwnProperty.call(memStore, k) ? memStore[k] : null; }
+    },
+    set: function (k, v) {
+      try { localStorage.setItem(k, v); } catch (e) { memStore[k] = String(v); }
+    },
+    del: function (k) {
+      try { localStorage.removeItem(k); } catch (e) { delete memStore[k]; }
+    },
+    /* True when writes actually persist; used to warn the user that progress
+       will not survive closing the tab. */
+    persists: (function () {
+      try { localStorage.setItem('exc.probe', '1'); localStorage.removeItem('exc.probe'); return true; }
+      catch (e) { return false; }
+    })()
+  };
+
   /* ---------------- State ---------------- */
-  let lang  = localStorage.getItem(LS.lang) || 'fr';
+  let lang  = store.get(LS.lang) || 'fr';
   let mode  = null;            // 'exam' | 'practice' | 'mistakes'
   let deck  = [];              // [{q, order:[...], picked:null}]
   let idx   = 0;
@@ -125,11 +153,11 @@
 
   /* ---------------- Storage ---------------- */
   function load(key, fb) {
-    try { const v = JSON.parse(localStorage.getItem(key)); return v === null ? fb : v; }
+    try { const v = JSON.parse(store.get(key)); return v === null ? fb : v; }
     catch (e) { return fb; }
   }
   function save(key, val) {
-    try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) { /* private mode */ }
+    try { store.set(key, JSON.stringify(val)); } catch (e) { /* nothing else to do */ }
   }
 
   /* ---------------- Utilities ---------------- */
@@ -163,7 +191,9 @@
       if (t[k] && typeof t[k] === 'string') el.innerHTML = t[k];
     });
     $$('.lang-toggle button').forEach(function (b) { b.classList.toggle('on', b.dataset.lang === lang); });
-    save(LS.lang, lang);
+    const warn = $('#storageWarn');
+    if (warn && !store.persists) { warn.textContent = T[lang].noStore; warn.hidden = false; }
+    store.set(LS.lang, lang);
   }
 
   /* ---------------- Session persistence ----------------
@@ -188,7 +218,7 @@
   }
 
   function clearSession() {
-    try { localStorage.removeItem(LS.session); } catch (e) { /* ignore */ }
+    store.del(LS.session);
   }
 
   /* Returns a usable session, or null. Anything stale or inconsistent — an old
@@ -276,7 +306,7 @@
 
   function track(name) {
     try {
-      if (localStorage.getItem('exc.noanalytics')) return;
+      if (store.get('exc.noanalytics')) return;
       const dnt = navigator.doNotTrack || window.doNotTrack;
       if (dnt === '1' || dnt === 'yes') return;
       if (!window.goatcounter || typeof window.goatcounter.count !== 'function') return;

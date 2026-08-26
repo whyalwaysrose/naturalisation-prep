@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#1b2a4a">
 <meta name="description" content="Préparation à l'examen civique de naturalisation française — 243 questions officielles, examen blanc chronométré, correction détaillée.">
 <title>Examen civique — préparation à la naturalisation</title>
-<link rel="stylesheet" href="assets/css/style.css?v=4">
+<link rel="stylesheet" href="assets/css/style.css?v=5">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='11' height='32' fill='%230055A4'/><rect x='11' width='10' height='32' fill='%23fff'/><rect x='21' width='11' height='32' fill='%23EF4135'/></svg>">
 </head>
 <body>
@@ -171,9 +171,37 @@
 </main>
 
 <footer class="app-footer">
+  <p id="storageWarn" class="store-warn" hidden></p>
   <p id="buildTag" class="build-tag"></p>
   <p data-t="footDis">Site d'entraînement non officiel. Les bonnes réponses et explications ne sont pas produites par le ministère de l'Intérieur.</p>
 </footer>
+
+<!-- Visible error surface. Installed before the app scripts so that a script
+     that fails to parse or throws on startup produces a message on screen
+     instead of a page where nothing responds. -->
+<script>
+(function () {
+  function show(msg) {
+    var d = document.getElementById('fatal');
+    if (!d) { d = document.createElement('div'); d.id = 'fatal'; d.className = 'fatal'; document.body.appendChild(d); }
+    d.textContent = '⚠ ' + msg;
+    d.removeAttribute('hidden');
+  }
+  window.addEventListener('error', function (e) {
+    var where = (e.filename || '').split('/').pop();
+    show((e.message || 'Erreur') + (where ? ' — ' + where + ':' + e.lineno : ''));
+  });
+  window.__showFatal = show;
+  // If the app never boots, say so rather than leaving a dead page.
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      if (!document.body.dataset.screen) {
+        show("L'application n'a pas démarré / the app did not start. Build attendu : v5.");
+      }
+    }, 1200);
+  });
+})();
+</script>
 
 <!-- ===================== RESUME / RESTART SHEET ===================== -->
 <div class="sheet-wrap" id="sheet" hidden>
@@ -194,12 +222,12 @@
 <script>window.goatcounter = { no_onload: true };</script>
 <script data-goatcounter="https://whyalwaysrose.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
-<script src="data/questions.js?v=4"></script>
-<script src="data/q-valeurs.js?v=4"></script>
-<script src="data/q-institutions.js?v=4"></script>
-<script src="data/q-droits.js?v=4"></script>
-<script src="data/q-histoire.js?v=4"></script>
-<script src="data/q-societe.js?v=4"></script>
-<script src="assets/js/app.js?v=4"></script>
+<script src="data/questions.js?v=5"></script>
+<script src="data/q-valeurs.js?v=5"></script>
+<script src="data/q-institutions.js?v=5"></script>
+<script src="data/q-droits.js?v=5"></script>
+<script src="data/q-histoire.js?v=5"></script>
+<script src="data/q-societe.js?v=5"></script>
+<script src="assets/js/app.js?v=5"></script>
 </body>
 </html>

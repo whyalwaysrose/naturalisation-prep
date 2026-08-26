@@ -47,6 +47,38 @@ figures, 3 on territory and geography, 2 on French heritage.
 the bank instead would over-weight history (76 of our 243 questions) and
 under-weight values and duties — which together carry **22 of the 40 marks**.
 
+### The situational questions in this app
+
+Because 30% of the paper is situational and unpublished, the app includes **40
+*mises en situation*** — 20 in values, 20 in rights and duties — as **its own
+practice section**, and they fill the 12 situational slots in the mock exam so
+the paper matches the official composition exactly.
+
+> ⚠ **These are not official in any part.** Unlike the rest of the bank, even the
+> *question wordings* are written by us. The Ministry publishes no situational
+> questions, no examples and no programme for them. They are marked in the app
+> with an orange **"Mise en situation · non officielle"** label and a dashed
+> border, and they are excluded from "Tout mélanger" and "Ordre officiel", which
+> stay strictly the 243 verbatim official questions.
+
+They are modelled on the one decision pattern every source agrees on:
+
+> **dialogue first → then the legal or institutional channel.**
+> Violence, revenge, indifference and private work-arounds are always wrong.
+> A useful filter: *what would an agent of the public service do?*
+
+Institutions worth knowing by name, because they are often the answer:
+Défenseur des droits, inspection du travail, conseil de prud'hommes, PHAROS,
+CPAM, mairie, conciliateur de justice, and 15 / 17 / 18 / 112 / 119.
+
+Sources consulted for situation types and reasoning patterns — all of which state
+plainly that their examples are pedagogical, not real exam content:
+[parcours-civique.fr](https://parcours-civique.fr/mises-en-situation-examen-civique-2026/),
+[civiqio.fr](https://www.civiqio.fr/blog/mises-en-situation-examen-civique-2026),
+[naturalisationfrancefacile.fr](https://naturalisationfrancefacile.fr/blog/questions-mise-en-situation-examen-civique-naturalisation.html),
+[refugies.info](https://refugies.info/en/procedure/69947fe741807e63ce7a7030).
+Reddit could not be consulted — it blocks automated access.
+
 ### Is the published list exhaustive? No.
 
 Two reasons the questions you meet may not all be in this bank:

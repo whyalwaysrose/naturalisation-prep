@@ -169,6 +169,12 @@ a { color: var(--bleu); }
 .card-arrow { color: var(--ink-3); font-size: 24px; line-height: 1; flex: none; }
 .card[disabled] { opacity: .5; pointer-events: none; }
 
+/* Situational practice — visually distinct because, unlike everything else,
+   these questions are not transcribed from the Ministry's list. */
+.card-sit { border-style: dashed; border-color: var(--ink-3); }
+.qb-theme.is-sit { color: var(--warn); font-weight: 700; }
+@media (prefers-color-scheme: dark) { .qb-theme.is-sit { color: #e6b95c; } }
+
 /* Resume card — sits above everything on Home when a run is unfinished */
 .card-resume { border-color: var(--bleu); border-width: 1.5px;
   background: var(--resume-bg); margin-top: 18px; }

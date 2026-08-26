@@ -29,12 +29,14 @@
      243 questions) and under-weight values and duties, which together carry 22
      of the 40 marks. */
   const EXAM_BLUEPRINT = [
-    { cat:'valeurs',      n:11 },
-    { cat:'institutions', n:6  },
-    { cat:'droits',       n:11 },
-    { cat:'histoire',     n:8  },
-    { cat:'societe',      n:4  }
-  ];
+    { cat:'valeurs',      n:5, sit:false },   // 3 symbols + 2 laïcité
+    { cat:'valeurs',      n:6, sit:true  },   // the 6 situational slots
+    { cat:'institutions', n:6, sit:false },
+    { cat:'droits',       n:5, sit:false },   // 2 fundamental rights + 3 duties
+    { cat:'droits',       n:6, sit:true  },   // the 6 situational slots
+    { cat:'histoire',     n:8, sit:false },
+    { cat:'societe',      n:4, sit:false }
+  ];                                          // 28 knowledge + 12 situational = 40
 
   const LS = { lang:'exc.lang', hist:'exc.hist', stats:'exc.stats', wrong:'exc.wrong',
                session:'exc.session' };
@@ -42,7 +44,7 @@
   /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
      a phone, whether the page being looked at is the current build or a cached
      one — the usual cause of "the buttons stopped working". */
-  const BUILD = '2026.08.26-10';
+  const BUILD = '2026.08.26-11';
 
   /* ---------------- i18n ---------------- */
   const T = {
@@ -84,6 +86,8 @@
       noStore:"Stockage du navigateur indisponible : votre progression sera perdue en fermant l'onglet. Désactivez le blocage des cookies ou la navigation privée pour la conserver.",
       mExam:'Examen blanc', mPractice:'Entraînement', mMistakes:'Révision des erreurs',
       oRandom:'toutes les questions mélangées', oSeq:'ordre officiel',
+      sitT:'Mises en situation', sitBadge:'Mise en situation · non officielle',
+      sitD:function(n){return n+" scénarios rédigés pour ce site — le ministère n'en publie aucun";},
       srcT:"D'où viennent ces questions ?",
       srcP1:"<strong>Les intitulés des questions</strong> sont repris mot pour mot de la liste officielle publiée par le ministère de l'Intérieur (Direction générale des étrangers en France), version du 12 décembre 2025.",
       srcP2:"<strong>Les propositions de réponse, les bonnes réponses et les explications</strong> ont été rédigées pour ce site. Le ministère ne publie pas les options de réponse : elles ne sont donc pas officielles. Les 12 « mises en situation » de l'examen réel ne sont pas publiques et ne figurent pas ici.",
@@ -128,6 +132,8 @@
       noStore:'Browser storage is unavailable, so your progress will be lost when you close the tab. Turn off cookie blocking or private browsing to keep it.',
       mExam:'Mock exam', mPractice:'Practice', mMistakes:'Mistake review',
       oRandom:'all questions shuffled', oSeq:'official order',
+      sitT:'Situational questions', sitBadge:'Situational · not official',
+      sitD:function(n){return n+' scenarios written for this site — the Ministry publishes none';},
       srcT:'Where do these questions come from?',
       srcP1:'<strong>The wording of the questions</strong> is taken verbatim from the official list published by the French Ministry of the Interior (Directorate-General for Foreign Nationals), version of 12 December 2025.',
       srcP2:'<strong>The answer options, correct answers and explanations</strong> were written for this site. The Ministry publishes question wordings only, never the options — so these are not official. The 12 situational scenarios used in the real exam are not public and do not appear here.',
@@ -236,7 +242,18 @@
   }
   function L(q) { return q[lang] || q.fr; }
   function catName(c) { return c[lang] || c.fr; }
-  function inCat(id) { return QUESTIONS.filter(function (q) { return q.cat === id; }); }
+  /* The official bank (verbatim Ministry wordings) and our own situational
+     practice set are kept apart everywhere except the mock exam, which needs
+     both to reproduce the real paper. */
+  function isSit(q) { return q.sit === true; }
+  function knowledgeBank() { return QUESTIONS.filter(function (q) { return !isSit(q); }); }
+  function situationBank() { return QUESTIONS.filter(isSit); }
+  function inCat(id) {
+    return QUESTIONS.filter(function (q) { return q.cat === id && !isSit(q); });
+  }
+  function inCatSit(id) {
+    return QUESTIONS.filter(function (q) { return q.cat === id && isSit(q); });
+  }
 
   /* ---------------- Language ---------------- */
   function applyLang() {
@@ -408,7 +425,7 @@
 
     const best = hist.reduce(function (m, h) { return Math.max(m, h.score); }, 0);
     $('#statStrip').innerHTML =
-      '<div class="stat"><b>' + QUESTIONS.length + '</b><span>' + esc(t.statQ) + '</span></div>' +
+      '<div class="stat"><b>' + knowledgeBank().length + '</b><span>' + esc(t.statQ) + '</span></div>' +
       '<div class="stat"><b>' + hist.length + '</b><span>' + esc(t.statExams) + '</span></div>' +
       '<div class="stat"><b>' + (hist.length ? best + '/40' : '—') + '</b><span>' + esc(t.statBest) + '</span></div>';
 
@@ -478,7 +495,12 @@
         '<span class="card-body"><span class="card-t">' + esc(catName(c)) + '</span>' +
         '<span class="card-d">' + esc(sub) + '</span></span>' +
         '<span class="card-arrow">›</span></button>';
-    }).join('');
+    }).join('') +
+    '<button class="card card-sit" data-theme="__sit">' +
+      '<span class="card-ico">🎭</span>' +
+      '<span class="card-body"><span class="card-t">' + esc(TT().sitT) + '</span>' +
+      '<span class="card-d">' + esc(TT().sitD(situationBank().length)) + '</span></span>' +
+      '<span class="card-arrow">›</span></button>';
   }
 
   /* ---------------- Deck building ---------------- */
@@ -497,11 +519,12 @@
     if (order === 'seq') {
       // official order: categories top to bottom, questions in published order
       list = [];
-      CATEGORIES.forEach(function (c) { list = list.concat(inCat(c.id)); });
+      CATEGORIES.forEach(function (c) { list = list.concat(inCat(c.id)); });   // official only
     } else if (order === 'theme') {
-      list = inCat(theme);                    // one section, its own published order
+      list = (theme === '__sit') ? shuffle(situationBank())   // our practice scenarios
+                                 : inCat(theme);              // official, published order
     } else {
-      list = shuffle(QUESTIONS);              // everything, fully shuffled
+      list = shuffle(knowledgeBank());        // the 243 official questions
     }
     deck = list.map(makeItem);
     idx = 0;
@@ -519,7 +542,8 @@
     // Draw to the official per-theme quota, then shuffle the order of the paper.
     let picked = [];
     EXAM_BLUEPRINT.forEach(function (b) {
-      picked = picked.concat(shuffle(inCat(b.cat)).slice(0, b.n));
+      const pool = b.sit ? inCatSit(b.cat) : inCat(b.cat);
+      picked = picked.concat(shuffle(pool).slice(0, b.n));
     });
     // If the bank ever lacks enough in a theme, top up so the paper is still 40.
     if (picked.length < EXAM_LEN) {
@@ -582,7 +606,8 @@
     const showFeedback = (mode !== 'exam') && answered;
 
     $('#qCount').textContent = (idx + 1) + ' / ' + deck.length;
-    $('#qTheme').textContent = catName(c);
+    $('#qTheme').textContent = isSit(q) ? TT().sitBadge : catName(c);
+    $('#qTheme').classList.toggle('is-sit', isSit(q));
     $('#qProgress').style.width = (idx / deck.length * 100) + '%';
     $('#qText').textContent = loc.q;
 

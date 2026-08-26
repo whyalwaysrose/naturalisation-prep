@@ -169,6 +169,44 @@ If you find a wrong answer or a stale fact, open an issue or a PR against the re
 
 ---
 
+## Browser support
+
+Built to work on the phones people actually own, not just current Chrome.
+
+| Platform | Supported from |
+|---|---|
+| iOS Safari (iPhone, iPad) | **14+** |
+| Chrome (Android) | **80+** |
+| Samsung Internet (Galaxy) | **13+** |
+| Firefox / Edge / Opera mobile | current |
+| Xiaomi, OPPO, vivo, OnePlus, Huawei stock browsers | Chromium-based, covered by the above |
+| In-app browsers (WhatsApp, Instagram, Messenger, Gmail) | yes, including when storage is blocked |
+
+Verified at the real dimensions of iPhone SE, iPhone 13/14/15, iPhone 15 Pro Max,
+Galaxy S21–S23, Galaxy A-series, Galaxy S8, Pixel 7/8, Redmi Note and Galaxy
+Z Fold (folded and unfolded): no horizontal scrolling, no controls off the edge,
+every tap target ≥ 40px, and the full start → answer → next → back flow working
+on each.
+
+Deliberate constraints that keep it working on older engines:
+
+- **No `color-mix()`** — unsupported on Samsung Internet before v22, and an
+  unsupported `color-mix` invalidates the whole declaration, so tints vanished
+  silently. Colours are plain tokens, themed for light and dark.
+- **`100dvh` always paired with a `100vh` fallback.**
+- **No build step, no framework, no ES6+ syntax** beyond `const`/`let` — no arrow
+  functions, template literals, optional chaining or `NodeList.forEach`.
+- **Storage is never assumed.** Reading `localStorage` throws outright in Safari
+  with "Block All Cookies" and in some in-app browsers; all access is wrapped and
+  falls back to memory, and the footer says so when progress cannot be saved.
+- `-webkit-sticky`, explicit `top/right/bottom/left` instead of `inset`, and
+  `touch-action: manipulation` to remove the legacy 300ms tap delay.
+- `format-detection: telephone=no`, so emergency numbers in the questions
+  (15, 17, 18, 112) are not turned into phone links.
+
+If something is broken on your device, the page shows a red banner naming the
+error, and the footer shows the build — quote both when reporting it.
+
 ## Privacy
 
 **Your answers, scores and mistakes never leave your device.** They are held in

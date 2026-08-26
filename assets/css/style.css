@@ -27,6 +27,13 @@
   /* Real header height, measured and kept up to date by app.js. The fallback
      only has to be close; anything sticky positions against the live value. */
   --hdr:       65px;
+  /* Pre-mixed tints. These were color-mix() values, which Samsung Internet and
+     older WebViews do not support — and an unsupported color-mix makes the whole
+     declaration invalid, so the tint silently disappeared on those browsers. */
+  --sel-bg:    #eaf2fb;
+  --ok-line:   #a8d8bf;
+  --bad-line:  #f2b8b5;
+  --resume-bg: #edf4fc;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,10 +42,18 @@
     --bg: #0f1219; --surface: #171b24; --line: #272d3a;
     --ok: #4ade80; --ok-bg: #12301f; --bad: #f87171; --bad-bg: #331617;
     --accent: #dfe6f2; --shadow: 0 1px 3px rgba(0,0,0,.4);
+    --sel-bg: #16233a; --ok-line: #2c5c42; --bad-line: #6b3230; --resume-bg: #15243c;
   }
 }
 
 * { box-sizing: border-box; }
+
+/* Tells the browser both themes are handled, which stops Samsung Internet and
+   Chrome's "force dark" from re-inverting colours that are already dark. */
+:root { color-scheme: light dark; }
+
+/* Removes the legacy 300ms tap delay and double-tap-to-zoom on controls. */
+button, .card, .choice, .btn, summary, a { touch-action: manipulation; }
 
 /* The [hidden] attribute must always win. Without this, any class that sets
    `display` (e.g. .hdr-btn { display:grid }) beats the UA stylesheet's
@@ -65,7 +80,7 @@ a { color: var(--bleu); }
 
 /* ---------------- Header ---------------- */
 .app-header {
-  position: sticky; top: 0; z-index: 40;
+  position: -webkit-sticky; position: sticky; top: 0; z-index: 40;
   display: flex; align-items: center; gap: 8px;
   padding: calc(var(--safe-t) + 10px) var(--pad) 10px;
   background: var(--accent);
@@ -88,7 +103,7 @@ a { color: var(--bleu); }
 .lang-toggle { display: flex; background: rgba(255,255,255,.15); border-radius: 999px; padding: 3px; flex: none; }
 @media (prefers-color-scheme: dark) { .lang-toggle { background: var(--bg); } }
 .lang-toggle button {
-  min-width: 46px; height: 38px; border: 0; background: none;
+  min-width: 48px; height: 40px; border: 0; background: none;
   color: inherit; font: inherit; font-size: 13px; font-weight: 600;
   border-radius: 999px; cursor: pointer; opacity: .7;
 }
@@ -149,13 +164,13 @@ a { color: var(--bleu); }
 
 /* Resume card — sits above everything on Home when a run is unfinished */
 .card-resume { border-color: var(--bleu); border-width: 1.5px;
-  background: color-mix(in srgb, var(--bleu) 6%, var(--surface)); margin-top: 18px; }
+  background: var(--resume-bg); margin-top: 18px; }
 .card-resume .card-t { color: var(--bleu); }
 @media (prefers-color-scheme: dark) { .card-resume .card-t { color: #7ab3ff; } }
 
 /* ---------------- Resume / restart sheet ---------------- */
-.sheet-wrap { position: fixed; inset: 0; z-index: 100; display: flex; align-items: flex-end; }
-.sheet-backdrop { position: absolute; inset: 0; background: rgba(10,14,22,.5);
+.sheet-wrap { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 100; display: flex; align-items: flex-end; }
+.sheet-backdrop { position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: rgba(10,14,22,.5);
   animation: sheetFade .18s ease-out; }
 .sheet {
   position: relative; width: 100%; max-width: 520px; margin: 0 auto;
@@ -209,9 +224,11 @@ body.sheet-open { overflow: hidden; }
 
 /* ---------------- Quiz ---------------- */
 .screen-quiz { display: none; }
-.screen-quiz.on { display: flex; flex-direction: column; min-height: calc(100dvh - var(--hdr)); padding-bottom: 0; }
+.screen-quiz.on { display: flex; flex-direction: column; padding-bottom: 0;
+  min-height: calc(100vh - var(--hdr));    /* every browser */
+  min-height: calc(100dvh - var(--hdr));   /* better where supported */ }
 
-.quiz-bar { position: sticky; top: var(--hdr); z-index: 30; background: var(--bg); padding: 12px 0 10px; }
+.quiz-bar { position: -webkit-sticky; position: sticky; top: var(--hdr); z-index: 30; background: var(--bg); padding: 12px 0 10px; }
 .qb-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .qb-count { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .qb-theme { font-size: 12px; color: var(--ink-3); margin-left: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -244,7 +261,7 @@ body.sheet-open { overflow: hidden; }
   margin-top: 1px;
 }
 .choice-txt { flex: 1; padding-top: 2px; }
-.choice.sel { border-color: var(--bleu); background: color-mix(in srgb, var(--bleu) 7%, var(--surface)); }
+.choice.sel { border-color: var(--bleu); background: var(--sel-bg); }
 .choice.sel .choice-key { background: var(--bleu); border-color: var(--bleu); color: #fff; }
 .choice.ok { border-color: var(--ok); background: var(--ok-bg); }
 .choice.ok .choice-key { background: var(--ok); border-color: var(--ok); color: #fff; }
@@ -253,8 +270,8 @@ body.sheet-open { overflow: hidden; }
 .choice[disabled] { cursor: default; }
 
 .feedback { margin-top: 16px; padding: 14px; border-radius: 12px; font-size: 14.5px; line-height: 1.5; border: 1px solid; }
-.feedback.ok { background: var(--ok-bg); border-color: color-mix(in srgb, var(--ok) 30%, transparent); }
-.feedback.bad { background: var(--bad-bg); border-color: color-mix(in srgb, var(--bad) 30%, transparent); }
+.feedback.ok { background: var(--ok-bg); border-color: var(--ok-line); }
+.feedback.bad { background: var(--bad-bg); border-color: var(--bad-line); }
 .fb-head { font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
 .feedback.ok .fb-head { color: var(--ok); }
 .feedback.bad .fb-head { color: var(--bad); }
@@ -262,7 +279,7 @@ body.sheet-open { overflow: hidden; }
 
 /* Sticky bottom bar — the key mobile affordance */
 .quiz-foot {
-  position: sticky; bottom: 0; z-index: 30;
+  position: -webkit-sticky; position: sticky; bottom: 0; z-index: 30;
   display: flex; gap: 10px;
   padding: 12px 0 calc(12px + var(--safe-b));
   background: linear-gradient(to bottom, transparent, var(--bg) 22%);
@@ -304,7 +321,7 @@ body.sheet-open { overflow: hidden; }
 .ring-fg { stroke: var(--ok); stroke-linecap: round; stroke-dasharray: 326.7; stroke-dashoffset: 326.7;
   transition: stroke-dashoffset .8s cubic-bezier(.2,.8,.3,1); }
 .ring-fg.fail { stroke: var(--bad); }
-.score-num { position: absolute; inset: 0; display: grid; place-content: center; }
+.score-num { position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: grid; place-content: center; }
 .score-num span { font-size: 42px; font-weight: 750; letter-spacing: -.03em; line-height: 1; }
 .score-num small { font-size: 15px; color: var(--ink-3); font-weight: 600; }
 .verdict { font-size: 23px; font-weight: 750; letter-spacing: -.02em; }
@@ -314,7 +331,7 @@ body.sheet-open { overflow: hidden; }
 .result-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 26px; }
 
 /* ---------------- Review ---------------- */
-.review-filter { display: flex; gap: 6px; position: sticky; top: var(--hdr); z-index: 30;
+.review-filter { display: flex; gap: 6px; position: -webkit-sticky; position: sticky; top: var(--hdr); z-index: 30;
   background: var(--bg); padding: 12px 0; }
 .review-filter button {
   flex: 1; min-height: 40px; border-radius: 10px; border: 1px solid var(--line);

@@ -173,10 +173,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 { id:'val22', cat:'valeurs', a:3,
   fr:{ q:"Que peut faire un usager du service public dans une mairie ?",
        c:["Exiger d'être servi avant les autres","Demander qu'un agent d'une religion précise le reçoive","Refuser d'être reçu par une femme","Être accueilli et traité de la même façon que tout autre usager"],
-       e:"Le service public repose sur l'égalité de traitement et la neutralité. L'usager ne peut ni exiger un traitement de faveur, ni récuser un agent en raison de son sexe ou de ses convictions." },
+       e:"Le service public repose sur l'égalité de traitement et la neutralité. L'usager ne peut ni exiger un traitement de faveur, ni récuser un agent en raison de son sexe ou de ses convictions. À retenir : contrairement à l'agent, l'usager n'est pas soumis à l'obligation de neutralité — il peut exprimer ses convictions, dans le respect du fonctionnement du service et de l'ordre public." },
   en:{ q:"What can a user of the public service do at a town hall?",
        c:["Demand to be served before others","Ask to be seen by an official of a particular religion","Refuse to be served by a woman","Be received and treated the same as any other user"],
-       e:"Public service rests on equal treatment and neutrality. Users may neither demand preferential treatment nor reject an official because of their sex or beliefs." } },
+       e:"Public service rests on equal treatment and neutrality. Users may neither demand preferential treatment nor reject an official because of their sex or beliefs. Note: unlike officials, users are not bound by the duty of neutrality — they may express their convictions, so long as they respect the running of the service and public order." } },
 
 { id:'val23', cat:'valeurs', a:1,
   fr:{ q:"En France, il est possible pour l'État de financer :",

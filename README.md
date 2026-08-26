@@ -51,6 +51,28 @@ Official question list:
 > **Verify before you sit the exam.** Answers and explanations here may contain errors.
 > If something here contradicts an official source, the official source is right.
 
+### Independent cross-check
+
+This answer key has been compared, question by question, against a **separately produced
+answer key** built from the same official Ministry question list by a different author.
+Both cover the same 243 questions in the same order.
+
+| Test | Result |
+|---|---|
+| Questions where this bank's answer also appears among the other key's four options | 141 → **141 agreed** |
+| Questions where the other key's answer also appears among this bank's four options | 143 → **143 agreed** |
+| Factual conflicts | **0** |
+
+The remaining questions could not be compared: the two documents wrote **different
+distractors**, so each key's answer is simply absent from the other's option set. In every
+such case both answers are independently true — e.g. *"which country is an EU founder?"*
+is answered **Italy** here and **France** there, because neither option set offers both.
+
+Two independent reconstructions agreeing on every comparable item raises confidence, but
+it does not make either one official. On genuinely open-ended wordings — *"which dish is a
+French speciality?"*, *"which museum is in Paris?"* — only the real exam's option set
+settles the answer, and the Ministry does not publish it.
+
 ---
 
 ## Features

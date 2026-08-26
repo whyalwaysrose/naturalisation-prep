@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1b2a4a">
+<meta name="description" content="Préparation à l'examen civique de naturalisation française — 244 questions officielles, examen blanc chronométré, correction détaillée.">
+<title>Examen civique — préparation à la naturalisation</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='11' height='32' fill='%230055A4'/><rect x='11' width='10' height='32' fill='%23fff'/><rect x='21' width='11' height='32' fill='%23EF4135'/></svg>">
+</head>
+<body>
+
+<header class="app-header" id="appHeader">
+  <button class="hdr-btn" id="btnBack" hidden aria-label="Retour">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <div class="hdr-title" id="hdrTitle">Examen civique</div>
+  <div class="lang-toggle" role="group" aria-label="Langue / Language">
+    <button data-lang="fr" class="on">FR</button>
+    <button data-lang="en">EN</button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ===================== HOME ===================== -->
+  <section class="screen on" id="screen-home">
+    <div class="hero">
+      <div class="hero-flag" aria-hidden="true"><i></i><i></i><i></i></div>
+      <h1>Examen civique</h1>
+      <p class="hero-sub" data-t="heroSub">Préparez la naturalisation française avec les questions de connaissance publiées par le ministère de l'Intérieur.</p>
+    </div>
+
+    <div class="stat-strip" id="statStrip"></div>
+
+    <h2 class="sec-h" data-t="secStart">Commencer</h2>
+
+    <button class="card card-primary" data-go="exam">
+      <span class="card-ico" aria-hidden="true">⏱️</span>
+      <span class="card-body">
+        <span class="card-t" data-t="modeExamT">Examen blanc</span>
+        <span class="card-d" data-t="modeExamD">40 questions · 45 minutes · 32/40 pour réussir</span>
+      </span>
+      <span class="card-arrow" aria-hidden="true">›</span>
+    </button>
+
+    <button class="card" data-go="practice">
+      <span class="card-ico" aria-hidden="true">📚</span>
+      <span class="card-body">
+        <span class="card-t" data-t="modePracT">Entraînement</span>
+        <span class="card-d" data-t="modePracD">Correction immédiate et explication après chaque question</span>
+      </span>
+      <span class="card-arrow" aria-hidden="true">›</span>
+    </button>
+
+    <button class="card" data-go="mistakes" id="cardMistakes">
+      <span class="card-ico" aria-hidden="true">🎯</span>
+      <span class="card-body">
+        <span class="card-t" data-t="modeMistT">Réviser mes erreurs</span>
+        <span class="card-d" id="mistakeCount" data-t="modeMistD">Aucune erreur enregistrée pour le moment</span>
+      </span>
+      <span class="card-arrow" aria-hidden="true">›</span>
+    </button>
+
+    <h2 class="sec-h" data-t="secProgress">Progression</h2>
+    <div id="themeProgress" class="theme-progress"></div>
+
+    <div id="histBox"></div>
+
+    <details class="disclosure">
+      <summary data-t="srcT">D'où viennent ces questions ?</summary>
+      <div class="disclosure-body">
+        <p data-t="srcP1"><strong>Les intitulés des questions</strong> sont repris mot pour mot de la liste officielle publiée par le ministère de l'Intérieur (Direction générale des étrangers en France), version du 12 décembre 2025.</p>
+        <p data-t="srcP2"><strong>Les propositions de réponse, les bonnes réponses et les explications</strong> ont été rédigées pour ce site. Le ministère ne publie pas les options de réponse : elles ne sont donc pas officielles. Les 12 « mises en situation » de l'examen réel ne sont pas publiques et ne figurent pas ici.</p>
+        <p data-t="srcP3">Vérifiez toujours auprès des sources officielles avant votre examen.</p>
+        <p class="src-links">
+          <a href="https://www.immigration.interieur.gouv.fr/documentation/examen-civique/questions-de-connaissance-pour-lexamen-civique-nationalite-francaise.html" target="_blank" rel="noopener">Liste officielle des questions ↗</a>
+          <a href="https://formation-civique.interieur.gouv.fr/examen-civique/informations-g%C3%A9n%C3%A9rales-sur-lexamen-civique/" target="_blank" rel="noopener">Modalités de l'examen ↗</a>
+        </p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ===================== PRACTICE SETUP ===================== -->
+  <section class="screen" id="screen-setup">
+    <h2 class="sec-h" data-t="pickMode">Comment voulez-vous travailler ?</h2>
+    <div id="setupList"></div>
+  </section>
+
+  <!-- ===================== THEME PICKER ===================== -->
+  <section class="screen" id="screen-themes">
+    <h2 class="sec-h" data-t="pickTheme">Choisissez un thème</h2>
+    <div id="themeList"></div>
+  </section>
+
+  <!-- ===================== EXAM INTRO ===================== -->
+  <section class="screen" id="screen-intro">
+    <div class="intro-card">
+      <h2 data-t="introT">Examen blanc</h2>
+      <ul class="intro-list">
+        <li><b>40</b> <span data-t="introQ">questions à choix multiple</span></li>
+        <li><b>45</b> <span data-t="introM">minutes maximum</span></li>
+        <li><b>32/40</b> <span data-t="introP">bonnes réponses pour réussir (80 %)</span></li>
+        <li data-t="introN">Aucune correction avant la fin, comme le jour J</li>
+      </ul>
+      <p class="intro-note" data-t="introNote">L'examen réel comporte 28 questions de connaissance et 12 mises en situation. Les mises en situation n'étant pas publiques, cet examen blanc tire 40 questions de connaissance.</p>
+      <button class="btn btn-primary btn-lg" id="btnStartExam" data-t="startExam">Commencer l'examen</button>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ ===================== -->
+  <section class="screen screen-quiz" id="screen-quiz">
+    <div class="quiz-bar">
+      <div class="qb-row">
+        <span class="qb-count" id="qCount">1 / 40</span>
+        <span class="qb-timer" id="qTimer" hidden>45:00</span>
+        <span class="qb-theme" id="qTheme"></span>
+      </div>
+      <div class="progress"><div class="progress-fill" id="qProgress"></div></div>
+    </div>
+
+    <div class="quiz-body">
+      <p class="q-text" id="qText"></p>
+      <div class="choices" id="qChoices" role="radiogroup"></div>
+      <div class="feedback" id="qFeedback" hidden></div>
+    </div>
+
+    <div class="quiz-foot">
+      <button class="btn btn-ghost" id="btnPrev" data-t="prev">Précédent</button>
+      <button class="btn btn-primary" id="btnNext" data-t="next">Suivant</button>
+    </div>
+  </section>
+
+  <!-- ===================== RESULTS ===================== -->
+  <section class="screen" id="screen-results">
+    <div class="result-hero" id="resultHero">
+      <div class="score-ring" id="scoreRing">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="ring-bg" cx="60" cy="60" r="52"/>
+          <circle class="ring-fg" cx="60" cy="60" r="52" id="ringFg"/>
+        </svg>
+        <div class="score-num"><span id="scoreVal">0</span><small id="scoreOf">/40</small></div>
+      </div>
+      <div class="verdict" id="verdict"></div>
+      <div class="verdict-sub" id="verdictSub"></div>
+    </div>
+
+    <h2 class="sec-h" data-t="byTheme">Résultat par thème</h2>
+    <div id="resultThemes"></div>
+
+    <div class="result-actions">
+      <button class="btn btn-primary btn-lg" id="btnReview" data-t="reviewAll">Revoir mes réponses</button>
+      <button class="btn btn-ghost btn-lg" id="btnRetry" data-t="retry">Recommencer</button>
+      <button class="btn btn-ghost btn-lg" data-go="home" data-t="backHome">Accueil</button>
+    </div>
+  </section>
+
+  <!-- ===================== REVIEW ===================== -->
+  <section class="screen" id="screen-review">
+    <div class="review-filter" role="group">
+      <button data-f="all" class="on" data-t="fAll">Toutes</button>
+      <button data-f="wrong" data-t="fWrong">Erreurs</button>
+      <button data-f="right" data-t="fRight">Justes</button>
+    </div>
+    <div id="reviewList"></div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <p data-t="footDis">Site d'entraînement non officiel. Les bonnes réponses et explications ne sont pas produites par le ministère de l'Intérieur.</p>
+</footer>
+
+<script src="data/questions.js"></script>
+<script src="data/q-valeurs.js"></script>
+<script src="data/q-institutions.js"></script>
+<script src="data/q-droits.js"></script>
+<script src="data/q-histoire.js"></script>
+<script src="data/q-societe.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

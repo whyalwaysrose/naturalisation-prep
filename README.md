@@ -4,8 +4,9 @@ A mobile-first practice site for the **examen civique**, the civics test that ha
 compulsory since **1 January 2026** for French naturalisation, reintegration, multi-year
 residence cards and resident cards.
 
-Static HTML/CSS/JS. No build step, no dependencies, no tracking, no backend.
+Static HTML/CSS/JS. No build step, no dependencies, no backend, no cookies.
 Everything runs in the browser; progress is stored in `localStorage` on your own device.
+Anonymous page-view analytics only — see [Privacy](#privacy).
 
 ---
 
@@ -167,6 +168,33 @@ If you find a wrong answer or a stale fact, open an issue or a PR against the re
 `legifrance.gouv.fr`, `interieur.gouv.fr`).
 
 ---
+
+## Privacy
+
+**Your answers, scores and mistakes never leave your device.** They are held in
+`localStorage` in your own browser, are never uploaded, and are not synced between
+devices. Clearing your browser data erases them.
+
+The site uses [GoatCounter](https://www.goatcounter.com/) for anonymous page-view
+analytics: no cookies, no personal data, no cross-site tracking, no advertising.
+Because this is a single-page app, screen changes are counted manually — so the
+statistics show *which screens* are opened (`/exam`, `/review`, `/quiz/practice`),
+and nothing else.
+
+Deliberately **never sent**: exam scores, individual answers, per-theme results,
+which questions were failed, or anything else about how a user is performing.
+
+Turn it off completely, in the browser console:
+
+```js
+localStorage.setItem('exc.noanalytics', '1')
+```
+
+Browsers sending `Do Not Track` are not counted, and GoatCounter's script ignores
+`localhost`, so local development never registers.
+
+To remove analytics from a fork entirely, delete the two `<script>` tags at the
+bottom of `index.html`; the `track()` function then becomes a no-op on its own.
 
 ## Disclaimer
 

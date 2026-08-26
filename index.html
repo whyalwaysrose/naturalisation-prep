@@ -172,6 +172,13 @@
   <p data-t="footDis">Site d'entraînement non officiel. Les bonnes réponses et explications ne sont pas produites par le ministère de l'Intérieur.</p>
 </footer>
 
+<!-- Analytics: GoatCounter — cookieless, no personal data, no cross-site tracking.
+     no_onload lets app.js count screen changes itself (this is a single-page app,
+     so the automatic on-load count would only ever record the home screen).
+     count.js ignores localhost, so local development never pollutes the stats. -->
+<script>window.goatcounter = { no_onload: true };</script>
+<script data-goatcounter="https://whyalwaysrose.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
 <script src="data/questions.js"></script>
 <script src="data/q-valeurs.js"></script>
 <script src="data/q-institutions.js"></script>

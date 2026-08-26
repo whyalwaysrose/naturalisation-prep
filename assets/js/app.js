@@ -145,6 +145,33 @@
     save(LS.lang, lang);
   }
 
+  /* ---------------- Analytics ----------------
+     GoatCounter, cookieless. Screen views only — never a score, an answer,
+     a theme result, or anything else about how the user is doing. Honours
+     Do Not Track, and can be switched off entirely with:
+         localStorage.setItem('exc.noanalytics', '1')
+     count.js already refuses to count on localhost.                        */
+  const BASE = location.pathname.replace(/index\.html$/, '').replace(/\/$/, '');
+  const SCREEN_TITLES = {
+    home:'Home', setup:'Practice — pick mode', themes:'Practice — pick theme',
+    intro:'Mock exam — intro', results:'Results', review:'Review',
+    'quiz/exam':'Quiz — mock exam', 'quiz/practice':'Quiz — practice',
+    'quiz/mistakes':'Quiz — mistakes'
+  };
+
+  function track(name) {
+    try {
+      if (localStorage.getItem('exc.noanalytics')) return;
+      const dnt = navigator.doNotTrack || window.doNotTrack;
+      if (dnt === '1' || dnt === 'yes') return;
+      if (!window.goatcounter || typeof window.goatcounter.count !== 'function') return;
+      window.goatcounter.count({
+        path:  name === 'home' ? BASE + '/' : BASE + '/' + name,
+        title: SCREEN_TITLES[name] || name
+      });
+    } catch (e) { /* analytics must never break the app */ }
+  }
+
   /* ---------------- Routing ---------------- */
   const TITLES = {
     home:    function () { return 'Examen civique'; },
@@ -164,6 +191,7 @@
     $('#hdrTitle').textContent = TITLES[name] ? TITLES[name]() : 'Examen civique';
     window.scrollTo(0, 0);
     document.body.dataset.screen = name;
+    track(name === 'quiz' && mode ? 'quiz/' + mode : name);
   }
 
   function goHome() { stopTimer(); mode = null; renderHome(); go('home'); }

@@ -12,13 +12,37 @@
   const EXAM_MIN  = 45;
   const EXAM_PASS = 32;
 
+  /* Official composition of the exam, from the arrêté of 10 October 2025
+     (Article 3). The real paper is NOT an even draw across themes:
+
+       Principes et valeurs de la République  11   (3 symbols, 2 laïcité, 6 situational)
+       Système institutionnel et politique     6   (3 democracy/voting, 2 organisation, 1 EU)
+       Droits et devoirs                      11   (2 fundamental rights, 3 duties, 6 situational)
+       Histoire, géographie et culture         8   (3 history, 3 geography, 2 heritage)
+       Vivre dans la société française         4
+                                              --
+                                              40   of which 12 are mises en situation
+
+     The 12 situational questions are not published by the Ministry, so this mock
+     fills those slots with knowledge questions from the same two themes. Drawing
+     uniformly from the bank instead would badly over-weight history (76 of our
+     243 questions) and under-weight values and duties, which together carry 22
+     of the 40 marks. */
+  const EXAM_BLUEPRINT = [
+    { cat:'valeurs',      n:11 },
+    { cat:'institutions', n:6  },
+    { cat:'droits',       n:11 },
+    { cat:'histoire',     n:8  },
+    { cat:'societe',      n:4  }
+  ];
+
   const LS = { lang:'exc.lang', hist:'exc.hist', stats:'exc.stats', wrong:'exc.wrong',
                session:'exc.session' };
 
   /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
      a phone, whether the page being looked at is the current build or a cached
      one — the usual cause of "the buttons stopped working". */
-  const BUILD = '2026.08.26-9';
+  const BUILD = '2026.08.26-10';
 
   /* ---------------- i18n ---------------- */
   const T = {
@@ -35,7 +59,7 @@
       pickTheme:'Choisissez un thème',
       introT:'Examen blanc', introQ:'questions à choix multiple', introM:'minutes maximum',
       introP:'bonnes réponses pour réussir (80 %)', introN:"Aucune correction avant la fin, comme le jour J",
-      introNote:"L'examen réel comporte 28 questions de connaissance et 12 mises en situation. Les mises en situation n'étant pas publiques, cet examen blanc tire 40 questions de connaissance.",
+      introNote:"Cet examen blanc suit la répartition officielle de l'arrêté du 10 octobre 2025 : 11 questions sur les principes et valeurs, 6 sur les institutions, 11 sur les droits et devoirs, 8 sur l'histoire-géographie-culture et 4 sur la vie en société. Sur les 40 questions, l'examen réel en compte 12 sous forme de « mises en situation » (6 en valeurs, 6 en droits) que le ministère ne publie pas : ces places sont ici occupées par des questions de connaissance des mêmes thèmes.",
       startExam:"Commencer l'examen",
       prev:'Précédent', next:'Suivant', finish:'Terminer', seeResults:'Voir mes résultats',
       byTheme:'Résultat par thème', reviewAll:'Revoir mes réponses', retry:'Recommencer', backHome:'Accueil',
@@ -79,7 +103,7 @@
       pickTheme:'Choose a theme',
       introT:'Mock exam', introQ:'multiple-choice questions', introM:'minutes maximum',
       introP:'correct answers to pass (80%)', introN:'No feedback until the end, just like the real thing',
-      introNote:'The real exam has 28 knowledge questions and 12 situational scenarios. The scenarios are not published, so this mock exam draws 40 knowledge questions.',
+      introNote:'This mock follows the official distribution set out in the arrêté of 10 October 2025: 11 questions on principles and values, 6 on institutions, 11 on rights and duties, 8 on history, geography and culture, and 4 on living in French society. Of the 40, the real exam has 12 as "mises en situation" (6 in values, 6 in rights) which the Ministry does not publish; those slots are filled here with knowledge questions from the same themes.',
       startExam:'Start the exam',
       prev:'Previous', next:'Next', finish:'Finish', seeResults:'See my results',
       byTheme:'Results by theme', reviewAll:'Review my answers', retry:'Try again', backHome:'Home',
@@ -492,7 +516,20 @@
     finishing = false; navAt = 0;
     lastRun = { mode:'exam' };
     quizOrigin = 'intro';
-    deck = shuffle(QUESTIONS).slice(0, EXAM_LEN).map(makeItem);
+    // Draw to the official per-theme quota, then shuffle the order of the paper.
+    let picked = [];
+    EXAM_BLUEPRINT.forEach(function (b) {
+      picked = picked.concat(shuffle(inCat(b.cat)).slice(0, b.n));
+    });
+    // If the bank ever lacks enough in a theme, top up so the paper is still 40.
+    if (picked.length < EXAM_LEN) {
+      const used = {};
+      picked.forEach(function (q) { used[q.id] = 1; });
+      picked = picked.concat(
+        shuffle(QUESTIONS.filter(function (q) { return !used[q.id]; }))
+          .slice(0, EXAM_LEN - picked.length));
+    }
+    deck = shuffle(picked).slice(0, EXAM_LEN).map(makeItem);
     idx = 0;
     startTimer(EXAM_MIN * 60);
     go('quiz');

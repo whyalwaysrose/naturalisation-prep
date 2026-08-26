@@ -23,6 +23,47 @@ Anonymous page-view analytics only — see [Privacy](#privacy).
 
 Naturalisation also requires French at **level B2** since 1 January 2026.
 
+### Official composition of the paper
+
+The real exam is **not** an even draw across themes. The
+[arrêté of 10 October 2025](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052381620)
+(Article 3) fixes it:
+
+| Theme | Questions | of which *mises en situation* |
+|---|---:|---:|
+| Principes et valeurs de la République | 11 | 6 |
+| Système institutionnel et politique | 6 | — |
+| Droits et devoirs | 11 | 6 |
+| Histoire, géographie et culture | 8 | — |
+| Vivre dans la société française | 4 | — |
+| **Total** | **40** | **12** |
+
+Broken down further: 3 on the motto and symbols, 2 on laïcité, 3 on democracy and
+voting, 2 on the organisation of the Republic, 1 on European institutions, 2 on
+fundamental rights, 3 on the duties of residents, 3 on historical periods and
+figures, 3 on territory and geography, 2 on French heritage.
+
+**The mock exam in this app draws to exactly this quota.** Drawing uniformly from
+the bank instead would over-weight history (76 of our 243 questions) and
+under-weight values and duties — which together carry **22 of the 40 marks**.
+
+### Is the published list exhaustive? No.
+
+Two reasons the questions you meet may not all be in this bank:
+
+1. **12 of the 40 are *mises en situation*** — everyday-life scenarios where you
+   choose the right reaction. The Ministry publishes only the *questions de
+   connaissance*, so the situational ones are **not public and are absent here**.
+   That is 30% of the paper, concentrated in values and rights and duties.
+2. **The list can change.** Article 3 requires the knowledge questions to be
+   published, but the arrêté sets no schedule and gives no guarantee of
+   permanence. The copy archived in `docs/` was verified byte-identical to the
+   live Ministry file on 26 August 2026 — re-check before your exam.
+
+Separate published lists exist for the **carte de séjour pluriannuelle** and the
+**carte de résident**. Those are different exams; this bank is the naturalisation
+list only.
+
 Sources: [Ministry of the Interior press release](https://www.interieur.gouv.fr/actualites/communiques-de-presse/a-partir-du-1er-janvier-2026-reussite-a-lexamen-civique-sera-necessaire-pour-obtenir-carte-de-sejour) ·
 [exam procedures](https://formation-civique.interieur.gouv.fr/examen-civique/informations-g%C3%A9n%C3%A9rales-sur-lexamen-civique/) ·
 [Arrêté of 10 October 2025](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052381620)

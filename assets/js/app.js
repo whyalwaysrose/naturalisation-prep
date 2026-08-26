@@ -44,7 +44,7 @@
   /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
      a phone, whether the page being looked at is the current build or a cached
      one — the usual cause of "the buttons stopped working". */
-  const BUILD = '2026.08.26-11';
+  const BUILD = '2026.08.26-12';
 
   /* ---------------- i18n ---------------- */
   const T = {
@@ -955,7 +955,7 @@
 
   /* ---------------- Boot ---------------- */
   const tag = $('#buildTag');
-  if (tag) tag.textContent = QUESTIONS.length + ' questions · build ' + BUILD;
+  if (tag) tag.textContent = knowledgeBank().length + ' + ' + situationBank().length + ' questions · build ' + BUILD;
   syncHeaderHeight();
   applyLang();
   renderHome();

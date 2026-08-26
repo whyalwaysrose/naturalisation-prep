@@ -18,7 +18,7 @@
   /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
      a phone, whether the page being looked at is the current build or a cached
      one — the usual cause of "the buttons stopped working". */
-  const BUILD = '2026.08.26-6';
+  const BUILD = '2026.08.26-8';
 
   /* ---------------- i18n ---------------- */
   const T = {
@@ -147,6 +147,21 @@
   let reviewFilter = 'all';
   let lastRun = null;          // {mode, order, theme} — for "retry"
   let quizOrigin = 'home';     // screen to return to when leaving a quiz
+  let navAt = 0;               // timestamp of the last question navigation
+  let finishing = false;       // guards against finishing a run more than once
+
+  /* Touch devices routinely deliver a second click for one tap — an impatient
+     double tap, a shaky finger, or a browser that fires both a touch-derived
+     and a compatibility mouse click. Without this, one tap could advance two
+     questions (silently skipping one, in a timed exam) or submit a run several
+     times over. */
+  const NAV_GAP = 350;
+  function navThrottled() {
+    const t = Date.now();
+    if (t - navAt < NAV_GAP) return true;
+    navAt = t;
+    return false;
+  }
 
   const $  = function (s, r) { return (r || document).querySelector(s); };
   const $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -253,6 +268,7 @@
   }
 
   function resumeSession(s) {
+    finishing = false; navAt = 0;
     mode = s.mode;
     deck = s._items;
     idx  = s.idx;
@@ -432,6 +448,7 @@
   function startPractice(order, theme) {
     mode = 'practice';
     clearSession();
+    finishing = false; navAt = 0;
     lastRun = { mode:'practice', order:order, theme:theme };
     quizOrigin = (order === 'theme') ? 'themes' : 'setup';
     let list;
@@ -454,6 +471,7 @@
   function startExam() {
     mode = 'exam';
     clearSession();
+    finishing = false; navAt = 0;
     lastRun = { mode:'exam' };
     quizOrigin = 'intro';
     deck = shuffle(QUESTIONS).slice(0, EXAM_LEN).map(makeItem);
@@ -469,6 +487,7 @@
     if (!list.length) return;
     mode = 'mistakes';
     clearSession();
+    finishing = false; navAt = 0;
     lastRun = { mode:'mistakes' };
     quizOrigin = 'home';
     deck = shuffle(list).map(makeItem);
@@ -555,10 +574,14 @@
   }
 
   function next() {
+    if (navThrottled()) return;
     if (idx < deck.length - 1) { idx++; renderQuestion(); saveSession(); }
     else finish(false);
   }
-  function prev() { if (idx > 0) { idx--; renderQuestion(); saveSession(); } }
+  function prev() {
+    if (navThrottled()) return;
+    if (idx > 0) { idx--; renderQuestion(); saveSession(); }
+  }
 
   /* ---------------- Stats ---------------- */
   function recordStat(q, ok) {
@@ -578,6 +601,8 @@
 
   /* ---------------- Finish & results ---------------- */
   function finish(timedOut) {
+    if (finishing) return;        // a second tap must not submit the run again
+    finishing = true;
     stopTimer();
     clearSession();               // the run is over; nothing left to resume
     if (mode === 'exam') {
@@ -768,7 +793,7 @@
     const choice = e.target.closest('.choice');
     if (choice && !choice.disabled) { pick(Number(choice.dataset.orig)); return; }
 
-    if (e.target.closest('#btnNext')) { next(); return; }
+    if (e.target.closest('#btnNext')) { if (!$('#btnNext').disabled) next(); return; }
     if (e.target.closest('#btnPrev')) { prev(); return; }
 
     if (e.target.closest('#btnReview')) { reviewFilter = 'all'; syncFilter(); renderReview(); go('review'); return; }

@@ -147,6 +147,45 @@ a { color: var(--bleu); }
 .card-arrow { color: var(--ink-3); font-size: 24px; line-height: 1; flex: none; }
 .card[disabled] { opacity: .5; pointer-events: none; }
 
+/* Resume card — sits above everything on Home when a run is unfinished */
+.card-resume { border-color: var(--bleu); border-width: 1.5px;
+  background: color-mix(in srgb, var(--bleu) 6%, var(--surface)); margin-top: 18px; }
+.card-resume .card-t { color: var(--bleu); }
+@media (prefers-color-scheme: dark) { .card-resume .card-t { color: #7ab3ff; } }
+
+/* ---------------- Resume / restart sheet ---------------- */
+.sheet-wrap { position: fixed; inset: 0; z-index: 100; display: flex; align-items: flex-end; }
+.sheet-backdrop { position: absolute; inset: 0; background: rgba(10,14,22,.5);
+  animation: sheetFade .18s ease-out; }
+.sheet {
+  position: relative; width: 100%; max-width: 520px; margin: 0 auto;
+  background: var(--surface); color: var(--ink);
+  border-radius: 18px 18px 0 0;
+  padding: 22px var(--pad) calc(18px + var(--safe-b));
+  box-shadow: 0 -8px 30px rgba(10,14,22,.28);
+  animation: sheetUp .22s cubic-bezier(.2,.8,.3,1);
+}
+.sheet-t { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
+.sheet-d { font-size: 15px; color: var(--ink-2); line-height: 1.5; margin-bottom: 18px; }
+.sheet .btn { width: 100%; margin-bottom: 9px; }
+.btn-plain { background: none; border: 0; color: var(--ink-3); font-size: 15px;
+  width: 100%; min-height: var(--tap); cursor: pointer; font-weight: 600; }
+body.sheet-open { overflow: hidden; }
+/* Deliberately a small offset, not translateY(100%): if the animation never
+   advances — a throttled tab, a frozen compositor — the sheet must still land
+   somewhere usable. A full-height slide would strand every button off-screen
+   behind a backdrop, with no way out. */
+@keyframes sheetUp   { from { opacity: 0; transform: translateY(14px); }
+                       to   { opacity: 1; transform: none; } }
+@keyframes sheetFade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .sheet, .sheet-backdrop { animation: none; }
+}
+@media (min-width: 720px) {
+  .sheet-wrap { align-items: center; }
+  .sheet { border-radius: 18px; padding-bottom: 18px; }
+}
+
 /* ---------------- Theme progress ---------------- */
 .theme-progress { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
 .tp-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); }

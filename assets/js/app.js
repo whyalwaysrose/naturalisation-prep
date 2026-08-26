@@ -12,12 +12,13 @@
   const EXAM_MIN  = 45;
   const EXAM_PASS = 32;
 
-  const LS = { lang:'exc.lang', hist:'exc.hist', stats:'exc.stats', wrong:'exc.wrong' };
+  const LS = { lang:'exc.lang', hist:'exc.hist', stats:'exc.stats', wrong:'exc.wrong',
+               session:'exc.session' };
 
   /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
      a phone, whether the page being looked at is the current build or a cached
      one — the usual cause of "the buttons stopped working". */
-  const BUILD = '2026.08.26-3';
+  const BUILD = '2026.08.26-4';
 
   /* ---------------- i18n ---------------- */
   const T = {
@@ -50,7 +51,14 @@
       allQ:'Toutes les questions',
       mistakesN:function(n){return n+' question'+(n>1?'s':'')+' à revoir';},
       noMistakes:'Aucune erreur enregistrée pour le moment',
-      timeUp:'Temps écoulé', quitConfirm:"Quitter l'examen ? Votre progression sera perdue.",
+      timeUp:'Temps écoulé',
+      resumeCardT:'Reprendre où vous en étiez',
+      sheetT:'Session en cours', sheetResume:'Reprendre', sheetRestart:'Recommencer à zéro',
+      sheetCancel:'Annuler',
+      sheetDesc:function(what,cur,tot){return 'Vous avez une session en cours : '+what+', question '+cur+' sur '+tot+'. Voulez-vous la reprendre ou repartir de zéro ?';},
+      resumeSub:function(what,cur,tot){return what+' · question '+cur+'/'+tot;},
+      mExam:'Examen blanc', mPractice:'Entraînement', mMistakes:'Révision des erreurs',
+      oRandom:'toutes les questions mélangées', oSeq:'ordre officiel',
       srcT:"D'où viennent ces questions ?",
       srcP1:"<strong>Les intitulés des questions</strong> sont repris mot pour mot de la liste officielle publiée par le ministère de l'Intérieur (Direction générale des étrangers en France), version du 12 décembre 2025.",
       srcP2:"<strong>Les propositions de réponse, les bonnes réponses et les explications</strong> ont été rédigées pour ce site. Le ministère ne publie pas les options de réponse : elles ne sont donc pas officielles. Les 12 « mises en situation » de l'examen réel ne sont pas publiques et ne figurent pas ici.",
@@ -86,7 +94,14 @@
       allQ:'All questions',
       mistakesN:function(n){return n+' question'+(n>1?'s':'')+' to review';},
       noMistakes:'No mistakes recorded yet',
-      timeUp:'Time is up', quitConfirm:'Leave the exam? Your progress will be lost.',
+      timeUp:'Time is up',
+      resumeCardT:'Pick up where you left off',
+      sheetT:'Session in progress', sheetResume:'Resume', sheetRestart:'Start over',
+      sheetCancel:'Cancel',
+      sheetDesc:function(what,cur,tot){return 'You have a session in progress: '+what+', question '+cur+' of '+tot+'. Resume it, or start again from scratch?';},
+      resumeSub:function(what,cur,tot){return what+' · question '+cur+'/'+tot;},
+      mExam:'Mock exam', mPractice:'Practice', mMistakes:'Mistake review',
+      oRandom:'all questions shuffled', oSeq:'official order',
       srcT:'Where do these questions come from?',
       srcP1:'<strong>The wording of the questions</strong> is taken verbatim from the official list published by the French Ministry of the Interior (Directorate-General for Foreign Nationals), version of 12 December 2025.',
       srcP2:'<strong>The answer options, correct answers and explanations</strong> were written for this site. The Ministry publishes question wordings only, never the options — so these are not official. The 12 situational scenarios used in the real exam are not public and do not appear here.',
@@ -149,6 +164,100 @@
     });
     $$('.lang-toggle button').forEach(function (b) { b.classList.toggle('on', b.dataset.lang === lang); });
     save(LS.lang, lang);
+  }
+
+  /* ---------------- Session persistence ----------------
+     A run in progress is written to localStorage after every answer and every
+     move between questions, so closing the tab, locking the phone or backing
+     out never costs the user their place. Only the question ids, the shuffled
+     option order and the picks are stored — small, and enough to rebuild the
+     deck exactly as it was.                                                  */
+  const SESSION_V = 1;
+
+  function saveSession() {
+    if (!mode || !deck.length) return;
+    const s = {
+      v: SESSION_V, mode: mode, idx: idx,
+      order: lastRun && lastRun.order ? lastRun.order : null,
+      theme: lastRun && lastRun.theme ? lastRun.theme : null,
+      origin: quizOrigin,
+      left: (mode === 'exam' && endsAt) ? Math.max(0, Math.round((endsAt - Date.now()) / 1000)) : null,
+      items: deck.map(function (it) { return { i: it.q.id, o: it.order, p: it.picked }; })
+    };
+    save(LS.session, s);
+  }
+
+  function clearSession() {
+    try { localStorage.removeItem(LS.session); } catch (e) { /* ignore */ }
+  }
+
+  /* Returns a usable session, or null. Anything stale or inconsistent — an old
+     schema, a question id that no longer exists, a finished run — is discarded
+     rather than half-restored. */
+  function loadSession() {
+    const s = load(LS.session, null);
+    if (!s || s.v !== SESSION_V || !s.items || !s.items.length) return null;
+    const byId = {};
+    QUESTIONS.forEach(function (q) { byId[q.id] = q; });
+    const items = [];
+    for (let i = 0; i < s.items.length; i++) {
+      const q = byId[s.items[i].i];
+      if (!q) return null;                       // bank changed under it
+      const o = s.items[i].o;
+      if (!Array.isArray(o) || o.length !== 4) return null;
+      items.push({ q: q, order: o, picked: (s.items[i].p === undefined ? null : s.items[i].p) });
+    }
+    if (s.idx < 0 || s.idx >= items.length) return null;
+    s._items = items;
+    return s;
+  }
+
+  /* Human-readable label: "Entraînement — Histoire, géographie et culture" */
+  function sessionLabel(s) {
+    const t = T[lang];
+    if (s.mode === 'exam')     return t.mExam;
+    if (s.mode === 'mistakes') return t.mMistakes;
+    if (s.theme)               return t.mPractice + ' — ' + catName(cat(s.theme));
+    if (s.order === 'seq')     return t.mPractice + ' — ' + t.oSeq;
+    return t.mPractice + ' — ' + t.oRandom;
+  }
+
+  function resumeSession(s) {
+    mode = s.mode;
+    deck = s._items;
+    idx  = s.idx;
+    quizOrigin = s.origin || 'home';
+    lastRun = { mode: s.mode, order: s.order, theme: s.theme };
+    stopTimer();
+    if (s.mode === 'exam' && s.left > 0) startTimer(s.left);
+    go('quiz');
+    renderQuestion();
+  }
+
+  /* ---------------- "Resume or start over?" sheet ----------------
+     An in-app sheet rather than confirm(): a native dialog blocks the page,
+     looks wrong on a phone, and its Cancel button previously left the user
+     apparently trapped inside a quiz.                                        */
+  let pendingStart = null;
+
+  function askResumeOrRestart(startFresh) {
+    const s = loadSession();
+    if (!s) { startFresh(); return; }             // nothing saved — just go
+    pendingStart = startFresh;
+    const t = T[lang];
+    $('#sheetTitle').textContent   = t.sheetT;
+    $('#sheetDesc').textContent    = t.sheetDesc(sessionLabel(s), s.idx + 1, s._items.length);
+    $('#sheetResume').textContent  = t.sheetResume;
+    $('#sheetRestart').textContent = t.sheetRestart;
+    $('#sheetCancel').textContent  = t.sheetCancel;
+    $('#sheet').hidden = false;
+    document.body.classList.add('sheet-open');
+  }
+
+  function closeSheet() {
+    $('#sheet').hidden = true;
+    document.body.classList.remove('sheet-open');
+    pendingStart = null;
   }
 
   /* ---------------- Analytics ----------------
@@ -215,6 +324,19 @@
       '<div class="stat"><b>' + hist.length + '</b><span>' + esc(t.statExams) + '</span></div>' +
       '<div class="stat"><b>' + (hist.length ? best + '/40' : '—') + '</b><span>' + esc(t.statBest) + '</span></div>';
 
+    // Resume card, shown above everything else when a run is unfinished
+    const sess = loadSession();
+    if (sess) {
+      $('#resumeBox').innerHTML =
+        '<button class="card card-resume" id="btnResume">' +
+          '<span class="card-ico">↩️</span>' +
+          '<span class="card-body"><span class="card-t">' + esc(t.resumeCardT) + '</span>' +
+          '<span class="card-d">' + esc(t.resumeSub(sessionLabel(sess), sess.idx + 1, sess._items.length)) + '</span></span>' +
+          '<span class="card-arrow">›</span></button>';
+    } else {
+      $('#resumeBox').innerHTML = '';
+    }
+
     const mc = $('#mistakeCount');
     if (wrong.length) { mc.textContent = t.mistakesN(wrong.length); $('#cardMistakes').disabled = false; }
     else { mc.textContent = t.noMistakes; $('#cardMistakes').disabled = true; }
@@ -279,6 +401,7 @@
   /* order: 'random' | 'seq' | 'theme' ; theme: category id when order==='theme' */
   function startPractice(order, theme) {
     mode = 'practice';
+    clearSession();
     lastRun = { mode:'practice', order:order, theme:theme };
     quizOrigin = (order === 'theme') ? 'themes' : 'setup';
     let list;
@@ -300,6 +423,7 @@
 
   function startExam() {
     mode = 'exam';
+    clearSession();
     lastRun = { mode:'exam' };
     quizOrigin = 'intro';
     deck = shuffle(QUESTIONS).slice(0, EXAM_LEN).map(makeItem);
@@ -314,6 +438,7 @@
     const list = QUESTIONS.filter(function (q) { return ids.indexOf(q.id) !== -1; });
     if (!list.length) return;
     mode = 'mistakes';
+    clearSession();
     lastRun = { mode:'mistakes' };
     quizOrigin = 'home';
     deck = shuffle(list).map(makeItem);
@@ -396,10 +521,14 @@
       recordWrong(item.q, orig === item.q.a);
     }
     renderQuestion();
+    saveSession();
   }
 
-  function next() { if (idx < deck.length - 1) { idx++; renderQuestion(); } else finish(false); }
-  function prev() { if (idx > 0) { idx--; renderQuestion(); } }
+  function next() {
+    if (idx < deck.length - 1) { idx++; renderQuestion(); saveSession(); }
+    else finish(false);
+  }
+  function prev() { if (idx > 0) { idx--; renderQuestion(); saveSession(); } }
 
   /* ---------------- Stats ---------------- */
   function recordStat(q, ok) {
@@ -420,6 +549,7 @@
   /* ---------------- Finish & results ---------------- */
   function finish(timedOut) {
     stopTimer();
+    clearSession();               // the run is over; nothing left to resume
     if (mode === 'exam') {
       deck.forEach(function (it) {
         const ok = it.picked === it.q.a;
@@ -563,7 +693,7 @@
       if (d === 'home')          goHome();
       else if (d === 'exam')     go('intro');
       else if (d === 'practice') { renderSetup(); go('setup'); }
-      else if (d === 'mistakes') startMistakes();
+      else if (d === 'mistakes') askResumeOrRestart(startMistakes);
       return;
     }
 
@@ -571,14 +701,39 @@
     if (ordBtn) {
       const o = ordBtn.dataset.order;
       if (o === 'theme') { renderThemes(); go('themes'); }
-      else startPractice(o);
+      else askResumeOrRestart(function () { startPractice(o); });
       return;
     }
 
     const themeBtn = e.target.closest('[data-theme]');
-    if (themeBtn) { startPractice('theme', themeBtn.dataset.theme); return; }
+    if (themeBtn) {
+      const th = themeBtn.dataset.theme;
+      askResumeOrRestart(function () { startPractice('theme', th); });
+      return;
+    }
 
-    if (e.target.closest('#btnStartExam')) { startExam(); return; }
+    if (e.target.closest('#btnStartExam')) { askResumeOrRestart(startExam); return; }
+
+    // --- resume sheet ---
+    if (e.target.closest('#btnResume')) {
+      const s = loadSession();
+      if (s) resumeSession(s); else { renderHome(); }
+      return;
+    }
+    if (e.target.closest('#sheetResume')) {
+      const s = loadSession();
+      closeSheet();
+      if (s) resumeSession(s);
+      return;
+    }
+    if (e.target.closest('#sheetRestart')) {
+      const go2 = pendingStart;
+      closeSheet();
+      clearSession();
+      if (go2) go2();
+      return;
+    }
+    if (e.target.closest('[data-sheet-close]')) { closeSheet(); return; }
 
     const choice = e.target.closest('.choice');
     if (choice && !choice.disabled) { pick(Number(choice.dataset.orig)); return; }
@@ -589,6 +744,7 @@
     if (e.target.closest('#btnReview')) { reviewFilter = 'all'; syncFilter(); renderReview(); go('review'); return; }
 
     if (e.target.closest('#btnRetry')) {
+      clearSession();
       if (!lastRun) { goHome(); return; }
       if (lastRun.mode === 'exam')          startExam();
       else if (lastRun.mode === 'mistakes') startMistakes();
@@ -612,9 +768,9 @@
   function back() {
     const scr = document.body.dataset.screen;
     if (scr === 'quiz') {
-      // Leaving an exam loses a timed run, so confirm that one — but practice
-      // and mistake drills exit freely.
-      if (mode === 'exam' && !confirm(T[lang].quitConfirm)) return;
+      // Nothing is lost by leaving: the run is saved and can be resumed from
+      // the Home screen or by starting the same mode again.
+      saveSession();
       stopTimer();
       mode = null;
       // Return to the screen the quiz was started from, so switching to a
@@ -630,6 +786,8 @@
 
   // Keyboard shortcuts — helpful on desktop, harmless on mobile
   document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !$('#sheet').hidden) { closeSheet(); return; }
+    if (!$('#sheet').hidden) return;                 // sheet swallows quiz keys
     if (document.body.dataset.screen !== 'quiz') return;
     if (e.key >= '1' && e.key <= '4') {
       const b = $$('#qChoices .choice')[Number(e.key) - 1];
@@ -649,6 +807,12 @@
     const px = Math.round(h.getBoundingClientRect().height);
     if (px > 0) document.documentElement.style.setProperty('--hdr', px + 'px');
   }
+  // A phone can suspend or kill the tab at any moment; persist before it does.
+  window.addEventListener('pagehide', saveSession);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') saveSession();
+  });
+
   window.addEventListener('resize', syncHeaderHeight);
   window.addEventListener('orientationchange', function () { setTimeout(syncHeaderHeight, 150); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncHeaderHeight);

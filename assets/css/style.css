@@ -127,13 +127,7 @@ a { color: var(--bleu); }
 }
 
 /* ---------------- Hero ---------------- */
-.hero { padding: 26px 0 6px; text-align: center; }
-.hero-flag { display: inline-flex; width: 46px; height: 30px; border-radius: 4px; overflow: hidden;
-  box-shadow: var(--shadow); margin-bottom: 14px; }
-.hero-flag i { flex: 1; }
-.hero-flag i:nth-child(1) { background: var(--bleu); }
-.hero-flag i:nth-child(2) { background: #fff; }
-.hero-flag i:nth-child(3) { background: var(--rouge); }
+.hero { padding: 30px 0 6px; text-align: center; }
 .hero h1 { font-size: 27px; font-weight: 750; letter-spacing: -.02em; }
 .hero-sub { color: var(--ink-2); font-size: 15px; margin-top: 8px; }
 

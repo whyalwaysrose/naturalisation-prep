@@ -1,5 +1,5 @@
 /* ============================================================
-   MISES EN SITUATION — 40 questions
+   MISES EN SITUATION — 50 questions (25 valeurs + 25 droits)
    ============================================================
 
    ⚠ NOT OFFICIAL, IN ANY PART.
@@ -28,7 +28,8 @@
    Sources consulted for the situation types and reasoning patterns (all state
    plainly that they are pedagogical, not real exam content):
    parcours-civique.fr, civiqio.fr, naturalisationfrancefacile.fr,
-   refugies.info. Reddit could not be searched — it blocks our crawler.
+   refugies.info. Reddit and Facebook could not be consulted: Reddit blocks
+   automated access, and Facebook groups are behind a login wall.
 
    `sit: true` marks these so the app can keep them out of the verbatim
    official bank while still using them for the 12 situational slots.
@@ -358,6 +359,92 @@ QUESTIONS.push.apply(QUESTIONS, [
        e:"L'affiliation à la Sécurité sociale dépend du travail ou d'une résidence stable et régulière, pas de la nationalité. Les cotisations ouvrent les mêmes droits : maladie, retraite, allocations familiales." },
   en:{ q:"A relative tells you that as a legally resident foreign national you have no right to social protection. What do you reply?",
        c:["That they are right — social protection is for French nationals","That you must wait ten years of residence","That anyone working or stably and legally resident in France is covered by health insurance, whatever their nationality","That you must take out compulsory private insurance"],
-       e:"Social security cover depends on work or stable, legal residence, not nationality. Contributions open the same rights: health care, pensions, family benefits." } }
+       e:"Social security cover depends on work or stable, legal residence, not nationality. Contributions open the same rights: health care, pensions, family benefits." } },
+/* ---------- Folded in from scenario types reported by candidates ----------
+   The sites consulted describe these situation types as recurring, drawing on
+   candidate recollection. The wordings below are still ours: nobody publishes
+   the real questions, and a recalled question is a paraphrase given months
+   after the fact. Treated as a signal about WHAT gets tested, not as exam
+   content.                                                                   */
+
+{ id:'sit41', cat:'valeurs', sit:true, a:2,
+  fr:{ q:"Dans une entreprise privée, un salarié souhaite prier quelques minutes pendant sa pause. Que dit le droit ?",
+       c:["C'est interdit : la laïcité s'applique à toutes les entreprises","C'est un droit absolu que l'employeur ne peut jamais limiter","C'est possible pendant les temps de pause ; l'employeur ne peut restreindre que pour des raisons justifiées et proportionnées","C'est possible seulement si l'employeur est de la même religion"],
+       e:"La neutralité s'impose au service public, pas aux entreprises privées. Le salarié garde sa liberté religieuse ; l'employeur ne peut la restreindre que si c'est justifié par la tâche ou la sécurité, et proportionné." },
+  en:{ q:"At a private company, an employee wants to pray for a few minutes during their break. What does the law say?",
+       c:["It is forbidden — laïcité applies to all companies","It is an absolute right the employer can never limit","It is possible during breaks; the employer may restrict only for justified and proportionate reasons","It is possible only if the employer shares the same religion"],
+       e:"Neutrality binds the public service, not private companies. Employees keep their religious freedom; an employer may restrict it only where justified by the task or safety, and proportionately." } },
+
+{ id:'sit42', cat:'valeurs', sit:true, a:0,
+  fr:{ q:"Une personne quitte la religion dans laquelle elle a grandi. Un membre de sa famille la menace pour l'y faire revenir. Que dit la loi ?",
+       c:["Changer de religion ou n'en avoir aucune est un droit ; les menaces sont un délit puni par la loi","C'est un conflit familial privé dans lequel la loi n'intervient pas","La personne doit respecter la religion de sa famille","La loi ne protège que les croyants"],
+       e:"La liberté de conscience comprend le droit de changer de religion ou d'y renoncer. Les menaces et les pressions exercées pour l'en empêcher sont pénalement réprimées, y compris au sein de la famille." },
+  en:{ q:"Someone leaves the religion they grew up in. A family member threatens them to make them return. What does the law say?",
+       c:["Changing religion or having none is a right; threats are a criminal offence","It is a private family matter the law stays out of","The person must respect their family's religion","The law protects believers only"],
+       e:"Freedom of conscience includes the right to change religion or give it up. Threats and pressure to prevent it are criminally punishable, including within a family." } },
+
+{ id:'sit43', cat:'valeurs', sit:true, a:3,
+  fr:{ q:"Un collègue vous dit qu'il refuse de servir certains clients à cause de leur origine. Quelle est la bonne réaction ?",
+       c:["Le laisser faire : chacun ses opinions","Servir ces clients à sa place sans rien dire","Lui proposer d'échanger discrètement de poste","Lui rappeler que le refus de vente fondé sur l'origine est un délit, et alerter la hiérarchie s'il persiste"],
+       e:"Refuser un bien ou un service en raison de l'origine, du nom, de la religion ou du handicap est une discrimination punie de trois ans d'emprisonnement et 45 000 € d'amende. L'employeur doit y mettre fin." },
+  en:{ q:"A colleague tells you he refuses to serve certain customers because of their origin. What is the right reaction?",
+       c:["Let him — everyone has their opinions","Serve those customers in his place and say nothing","Quietly offer to swap roles with him","Remind him that refusing service on grounds of origin is a criminal offence, and alert management if he persists"],
+       e:"Refusing goods or a service because of origin, name, religion or disability is discrimination, punishable by three years' imprisonment and a €45,000 fine. The employer must put a stop to it." } },
+
+{ id:'sit44', cat:'valeurs', sit:true, a:1,
+  fr:{ q:"Un voisin affirme que la laïcité interdit de porter un signe religieux dans la rue. A-t-il raison ?",
+       c:["Oui, aucun signe religieux ne peut être visible en public","Non : la laïcité s'impose à l'État et à ses agents, pas aux particuliers dans l'espace public","Oui, sauf pendant les fêtes religieuses","Non, mais seulement pour les personnes de nationalité française"],
+       e:"La laïcité impose la neutralité de l'État et de ses agents. Les particuliers restent libres de manifester leurs convictions dans l'espace public. Une exception vise la dissimulation du visage, interdite depuis 2010." },
+  en:{ q:"A neighbour claims that laïcité bans wearing a religious sign in the street. Is he right?",
+       c:["Yes, no religious sign may be visible in public","No: laïcité binds the State and its officials, not private individuals in public space","Yes, except during religious festivals","No, but only for French nationals"],
+       e:"Laïcité requires neutrality of the State and its officials. Private individuals remain free to show their beliefs in public space. One exception is concealing the face, banned since 2010." } },
+
+{ id:'sit45', cat:'valeurs', sit:true, a:2,
+  fr:{ q:"Des parents demandent que la cantine de l'école publique ne serve que des repas conformes à leur religion. Que répond la commune ?",
+       c:["Elle doit accepter : c'est la liberté de culte","Elle doit supprimer la cantine pour éviter tout conflit","Elle n'y est pas obligée : le service public ne se règle pas sur une religion, même s'il peut proposer des menus de substitution","Elle doit organiser un vote des parents"],
+       e:"La cantine est un service public facultatif. Aucune obligation religieuse ne peut lui être imposée, mais rien n'interdit à une commune de proposer un menu sans porc ou végétarien : c'est un choix local, pas un droit." },
+  en:{ q:"Parents ask that the state school canteen serve only meals conforming to their religion. What does the commune reply?",
+       c:["It must agree — that is freedom of worship","It must close the canteen to avoid conflict","It is not obliged to: a public service is not governed by a religion, though it may offer alternative menus","It must hold a parents' vote"],
+       e:"The canteen is an optional public service. No religious requirement can be imposed on it, but nothing stops a commune offering a pork-free or vegetarian option: that is a local choice, not a right." } },
+
+{ id:'sit46', cat:'droits', sit:true, a:1,
+  fr:{ q:"Des collègues en grève bloquent l'entrée de l'entreprise. Vous souhaitez travailler. Que dit le droit ?",
+       c:["Les grévistes peuvent empêcher l'accès : c'est le principe même de la grève","La grève est un droit constitutionnel, mais empêcher les non-grévistes de travailler est illicite : prévenez l'employeur","Vous devez faire grève par solidarité","Vous pouvez forcer le passage vous-même"],
+       e:"Le droit de grève est garanti par la Constitution. Il ne permet ni de bloquer l'accès aux locaux, ni d'empêcher les non-grévistes de travailler : c'est une entrave. Le règlement passe par l'employeur et la justice." },
+  en:{ q:"Colleagues on strike are blocking the entrance. You want to work. What does the law say?",
+       c:["Strikers may block access — that is the whole point of a strike","Striking is a constitutional right, but preventing non-strikers from working is unlawful: tell the employer","You must strike out of solidarity","You may force your way through yourself"],
+       e:"The right to strike is guaranteed by the Constitution. It allows neither blocking access to the premises nor stopping non-strikers from working: that is unlawful obstruction. Resolution goes through the employer and the courts." } },
+
+{ id:'sit47', cat:'droits', sit:true, a:2,
+  fr:{ q:"Vous souhaitez instruire votre enfant à la maison plutôt que de l'inscrire à l'école. Que faut-il faire ?",
+       c:["Rien : il suffit d'informer la mairie","Rien : l'instruction en famille est un droit sans formalité","Demander une autorisation préalable à l'académie, accordée pour des motifs limités","Attendre les 6 ans de l'enfant, puis faire une simple déclaration"],
+       e:"Depuis 2022, l'instruction en famille est soumise à une autorisation préalable du rectorat, accordée pour des motifs limités (santé, handicap, activité intensive, situation propre à l'enfant). L'instruction reste obligatoire de 3 à 16 ans." },
+  en:{ q:"You want to educate your child at home rather than enrol them in school. What must you do?",
+       c:["Nothing — just inform the town hall","Nothing — home education is a right with no formalities","Apply for prior authorisation from the education authority, granted on limited grounds","Wait until the child is 6, then simply declare it"],
+       e:"Since 2022 home education requires prior authorisation from the education authority, granted on limited grounds (health, disability, intensive activity, the child's own situation). Education remains compulsory from 3 to 16." } },
+
+{ id:'sit48', cat:'droits', sit:true, a:0,
+  fr:{ q:"Votre voisin, ressortissant d'un pays de l'Union européenne installé en France, vous demande s'il peut voter. Que lui répondez-vous ?",
+       c:["Qu'il peut voter aux élections municipales et européennes, mais pas aux présidentielles ni aux législatives","Qu'il peut voter à toutes les élections françaises","Qu'il ne peut voter à aucune élection en France","Qu'il peut voter uniquement s'il paie des impôts en France"],
+       e:"La citoyenneté européenne, créée par le traité de Maastricht en 1992, ouvre aux ressortissants de l'Union résidant en France le droit de vote et d'éligibilité aux élections municipales et européennes. Les scrutins nationaux restent réservés aux Français." },
+  en:{ q:"Your neighbour, an EU national living in France, asks whether he can vote. What do you tell him?",
+       c:["That he can vote in municipal and European elections, but not presidential or legislative ones","That he can vote in all French elections","That he cannot vote in any election in France","That he can vote only if he pays tax in France"],
+       e:"European citizenship, created by the Maastricht Treaty in 1992, gives EU nationals resident in France the right to vote and stand in municipal and European elections. National elections remain reserved for French citizens." } },
+
+{ id:'sit49', cat:'droits', sit:true, a:3,
+  fr:{ q:"Vous résidez fiscalement en France et percevez des loyers d'un bien situé à l'étranger. Que devez-vous déclarer ?",
+       c:["Rien : ces revenus sont déjà imposés à l'étranger","Seulement si la somme dépasse 10 000 € par an","Seulement les revenus versés sur un compte français","L'ensemble de vos revenus, y compris étrangers, ainsi que vos comptes ouverts à l'étranger"],
+       e:"Un résident fiscal français déclare ses revenus mondiaux. Les comptes bancaires détenus à l'étranger doivent aussi être déclarés. Les conventions fiscales évitent la double imposition, mais ne dispensent jamais de déclarer." },
+  en:{ q:"You are tax-resident in France and receive rent from a property abroad. What must you declare?",
+       c:["Nothing — that income is already taxed abroad","Only if it exceeds €10,000 a year","Only income paid into a French account","All your income, including foreign income, plus any accounts held abroad"],
+       e:"A French tax resident declares worldwide income. Bank accounts held abroad must also be declared. Tax treaties prevent double taxation but never remove the duty to declare." } },
+
+{ id:'sit50', cat:'droits', sit:true, a:1,
+  fr:{ q:"Dans la rue, vous voyez une personne en agresser physiquement une autre. Quelle est la bonne réaction ?",
+       c:["Intervenir physiquement pour séparer les deux personnes","Appeler immédiatement la police (17 ou 112), rester à distance et vous rendre disponible comme témoin","Filmer la scène sans appeler les secours","Passer votre chemin : cela ne vous regarde pas"],
+       e:"L'obligation de porter secours n'impose pas de se mettre en danger : alerter suffit et constitue déjà une assistance. Le témoignage est précieux pour l'enquête ; se substituer aux forces de l'ordre ne l'est pas." },
+  en:{ q:"In the street you see someone physically assaulting another person. What is the right reaction?",
+       c:["Step in physically to separate them","Call the police immediately (17 or 112), keep your distance and make yourself available as a witness","Film it without calling for help","Walk on — it is none of your business"],
+       e:"The duty to assist does not require putting yourself in danger: raising the alarm is itself assistance. Your witness account matters to the investigation; substituting yourself for the police does not." } }
 
 ]);

@@ -49,8 +49,8 @@ under-weight values and duties — which together carry **22 of the 40 marks**.
 
 ### The situational questions in this app
 
-Because 30% of the paper is situational and unpublished, the app includes **40
-*mises en situation*** — 20 in values, 20 in rights and duties — as **its own
+Because 30% of the paper is situational and unpublished, the app includes **50
+*mises en situation*** — 25 in values, 25 in rights and duties — as **its own
 practice section**, and they fill the 12 situational slots in the mock exam so
 the paper matches the official composition exactly.
 
@@ -77,7 +77,20 @@ plainly that their examples are pedagogical, not real exam content:
 [civiqio.fr](https://www.civiqio.fr/blog/mises-en-situation-examen-civique-2026),
 [naturalisationfrancefacile.fr](https://naturalisationfrancefacile.fr/blog/questions-mise-en-situation-examen-civique-naturalisation.html),
 [refugies.info](https://refugies.info/en/procedure/69947fe741807e63ce7a7030).
-Reddit could not be consulted — it blocks automated access.
+
+Ten of the fifty were added specifically because those sources describe them as
+situation types **candidates recall being asked**: workplace prayer, threats over
+leaving a religion, refusal of service by origin, laïcité wrongly applied to
+private individuals, school canteens and religious meals, strike pickets blocking
+access, home-schooling authorisation, EU nationals' voting rights, worldwide
+income and foreign accounts, and witnessing an assault. A recalled question is a
+paraphrase given months after the fact, so these are treated as a signal about
+*what gets tested* — never as exam content.
+
+**Reddit and Facebook could not be consulted.** Reddit blocks automated access
+outright; Facebook groups sit behind a login wall and are mostly private. If you
+have access to those discussions, the fastest way to improve this section is to
+paste threads in and have the patterns folded back here.
 
 ### Is the published list exhaustive? No.
 
@@ -117,7 +130,8 @@ never the correct answers. Any site claiming to give you "the official answers" 
 giving you someone's reconstruction. So are we; we just say so.
 
 The **12 situational scenarios** (*mises en situation*) in the real exam are not
-published and are therefore **absent** from this bank. Expect them on the day.
+published. This bank therefore contains **50 of our own**, clearly marked as
+unofficial — see [The situational questions in this app](#the-situational-questions-in-this-app).
 
 Official question list:
 <https://www.immigration.interieur.gouv.fr/documentation/examen-civique/questions-de-connaissance-pour-lexamen-civique-nationalite-francaise.html>

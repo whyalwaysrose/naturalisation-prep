@@ -44,7 +44,7 @@
   /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
      a phone, whether the page being looked at is the current build or a cached
      one — the usual cause of "the buttons stopped working". */
-  const BUILD = '2026.08.26-12';
+  const BUILD = '2026.08.26-13';
 
   /* ---------------- i18n ---------------- */
   const T = {

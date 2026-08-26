@@ -44,7 +44,7 @@
   /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
      a phone, whether the page being looked at is the current build or a cached
      one — the usual cause of "the buttons stopped working". */
-  const BUILD = '2026.08.26-16';
+  const BUILD = '2026.08.26-17';
 
   /* ---------------- i18n ---------------- */
   const T = {
@@ -94,7 +94,7 @@
       srcP1:"<strong>Les intitulés des questions</strong> sont repris mot pour mot de la liste officielle publiée par le ministère de l'Intérieur (Direction générale des étrangers en France), version du 12 décembre 2025.",
       srcP2:"<strong>Les propositions de réponse, les bonnes réponses et les explications</strong> ont été rédigées pour ce site. Le ministère ne publie pas les options de réponse : elles ne sont donc pas officielles. Les 12 « mises en situation » de l'examen réel ne sont pas publiques et ne figurent pas ici.",
       srcP3:'Vérifiez toujours auprès des sources officielles avant votre examen.',
-      goodLuck:"Courage — chaque session vous rapproche du but. Bonne chance ! 🇫🇷",
+      goodLuck:"Courage — chaque session vous rapproche du but. Bonne chance !",
       footDis:"Site d'entraînement non officiel. Les bonnes réponses et explications ne sont pas produites par le ministère de l'Intérieur."
     },
     en: {
@@ -143,7 +143,7 @@
       srcP1:'<strong>The wording of the questions</strong> is taken verbatim from the official list published by the French Ministry of the Interior (Directorate-General for Foreign Nationals), version of 12 December 2025.',
       srcP2:'<strong>The answer options, correct answers and explanations</strong> were written for this site. The Ministry publishes question wordings only, never the options — so these are not official. The 12 situational scenarios used in the real exam are not public and do not appear here.',
       srcP3:'Always check the official sources before sitting your exam.',
-      goodLuck:'Keep going — every session gets you closer. Bonne chance! 🇫🇷',
+      goodLuck:'Keep going — every session gets you closer. Bonne chance!',
       footDis:'Unofficial practice site. The correct answers and explanations are not produced by the Ministry of the Interior.'
     }
   };

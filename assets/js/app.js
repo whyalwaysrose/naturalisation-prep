@@ -14,6 +14,11 @@
 
   const LS = { lang:'exc.lang', hist:'exc.hist', stats:'exc.stats', wrong:'exc.wrong' };
 
+  /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
+     a phone, whether the page being looked at is the current build or a cached
+     one — the usual cause of "the buttons stopped working". */
+  const BUILD = '2026.08.26-3';
+
   /* ---------------- i18n ---------------- */
   const T = {
     fr: {
@@ -98,6 +103,7 @@
   let timer = null, endsAt = 0;
   let reviewFilter = 'all';
   let lastRun = null;          // {mode, order, theme} — for "retry"
+  let quizOrigin = 'home';     // screen to return to when leaving a quiz
 
   const $  = function (s, r) { return (r || document).querySelector(s); };
   const $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -274,6 +280,7 @@
   function startPractice(order, theme) {
     mode = 'practice';
     lastRun = { mode:'practice', order:order, theme:theme };
+    quizOrigin = (order === 'theme') ? 'themes' : 'setup';
     let list;
     if (order === 'seq') {
       // official order: categories top to bottom, questions in published order
@@ -294,6 +301,7 @@
   function startExam() {
     mode = 'exam';
     lastRun = { mode:'exam' };
+    quizOrigin = 'intro';
     deck = shuffle(QUESTIONS).slice(0, EXAM_LEN).map(makeItem);
     idx = 0;
     startTimer(EXAM_MIN * 60);
@@ -307,6 +315,7 @@
     if (!list.length) return;
     mode = 'mistakes';
     lastRun = { mode:'mistakes' };
+    quizOrigin = 'home';
     deck = shuffle(list).map(makeItem);
     idx = 0;
     stopTimer();
@@ -603,8 +612,17 @@
   function back() {
     const scr = document.body.dataset.screen;
     if (scr === 'quiz') {
+      // Leaving an exam loses a timed run, so confirm that one — but practice
+      // and mistake drills exit freely.
       if (mode === 'exam' && !confirm(T[lang].quitConfirm)) return;
-      goHome();
+      stopTimer();
+      mode = null;
+      // Return to the screen the quiz was started from, so switching to a
+      // different exam type is one tap rather than a trip back through Home.
+      if (quizOrigin === 'setup')       { renderSetup();  go('setup');  }
+      else if (quizOrigin === 'themes') { renderThemes(); go('themes'); }
+      else if (quizOrigin === 'intro')  { go('intro'); }
+      else                              { goHome(); }
     } else if (scr === 'review') { go('results'); }
     else if (scr === 'themes')   { renderSetup(); go('setup'); }
     else { goHome(); }
@@ -621,7 +639,24 @@
     } else if (e.key === 'ArrowLeft') { prev(); }
   });
 
+  /* ---------------- Layout ----------------
+     The header grows or shrinks with the safe-area inset and the text size, so
+     sticky elements below it must position against its real height rather than
+     a guessed constant. Keep --hdr in sync with what is actually on screen.   */
+  function syncHeaderHeight() {
+    const h = document.querySelector('.app-header');
+    if (!h) return;
+    const px = Math.round(h.getBoundingClientRect().height);
+    if (px > 0) document.documentElement.style.setProperty('--hdr', px + 'px');
+  }
+  window.addEventListener('resize', syncHeaderHeight);
+  window.addEventListener('orientationchange', function () { setTimeout(syncHeaderHeight, 150); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncHeaderHeight);
+
   /* ---------------- Boot ---------------- */
+  const tag = $('#buildTag');
+  if (tag) tag.textContent = QUESTIONS.length + ' questions · build ' + BUILD;
+  syncHeaderHeight();
   applyLang();
   renderHome();
   go('home');

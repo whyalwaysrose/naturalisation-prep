@@ -18,7 +18,7 @@
   /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
      a phone, whether the page being looked at is the current build or a cached
      one — the usual cause of "the buttons stopped working". */
-  const BUILD = '2026.08.26-8';
+  const BUILD = '2026.08.26-9';
 
   /* ---------------- i18n ---------------- */
   const T = {
@@ -139,7 +139,21 @@
   };
 
   /* ---------------- State ---------------- */
-  let lang  = store.get(LS.lang) || 'fr';
+  /* Language.
+     Builds up to v5 wrote this through save(), i.e. JSON.stringify, so the
+     stored value was '"fr"' *with quotes*, while it is read back raw. Any
+     unrecognised value made TT() undefined, and the first lookup threw
+     during initialisation — before a single event listener was attached, so
+     the page rendered but nothing on it responded. Validate on read, repair
+     the stored value, and never trust it again. */
+  const LANGS = ['fr', 'en'];
+  function readLang() {
+    let v = store.get(LS.lang);
+    if (v === null || v === undefined) return 'fr';
+    v = String(v).replace(/^["']+|["']+$/g, '').trim().toLowerCase();
+    return LANGS.indexOf(v) !== -1 ? v : 'fr';
+  }
+  let lang = readLang();
   let mode  = null;            // 'exam' | 'practice' | 'mistakes'
   let deck  = [];              // [{q, order:[...], picked:null}]
   let idx   = 0;
@@ -162,6 +176,9 @@
     navAt = t;
     return false;
   }
+
+  /* Always returns a valid string table, whatever `lang` holds. */
+  function TT() { return T[lang] || T.fr; }
 
   const $  = function (s, r) { return (r || document).querySelector(s); };
   const $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -200,14 +217,15 @@
   /* ---------------- Language ---------------- */
   function applyLang() {
     document.documentElement.lang = lang;
-    const t = T[lang];
+    const t = TT();
     $$('[data-t]').forEach(function (el) {
       const k = el.getAttribute('data-t');
       if (t[k] && typeof t[k] === 'string') el.innerHTML = t[k];
     });
     $$('.lang-toggle button').forEach(function (b) { b.classList.toggle('on', b.dataset.lang === lang); });
     const warn = $('#storageWarn');
-    if (warn && !store.persists) { warn.textContent = T[lang].noStore; warn.hidden = false; }
+    if (warn && !store.persists) { warn.textContent = TT().noStore; warn.hidden = false; }
+    if (LANGS.indexOf(lang) === -1) lang = 'fr';
     store.set(LS.lang, lang);
   }
 
@@ -259,7 +277,7 @@
 
   /* Human-readable label: "Entraînement — Histoire, géographie et culture" */
   function sessionLabel(s) {
-    const t = T[lang];
+    const t = TT();
     if (s.mode === 'exam')     return t.mExam;
     if (s.mode === 'mistakes') return t.mMistakes;
     if (s.theme)               return t.mPractice + ' — ' + catName(cat(s.theme));
@@ -290,7 +308,7 @@
     const s = loadSession();
     if (!s) { startFresh(); return; }             // nothing saved — just go
     pendingStart = startFresh;
-    const t = T[lang];
+    const t = TT();
     $('#sheetTitle').textContent   = t.sheetT;
     $('#sheetDesc').textContent    = t.sheetDesc(sessionLabel(s), s.idx + 1, s._items.length);
     $('#sheetResume').textContent  = t.sheetResume;
@@ -336,12 +354,12 @@
   /* ---------------- Routing ---------------- */
   const TITLES = {
     home:    function () { return 'Examen civique'; },
-    setup:   function () { return T[lang].pickMode; },
-    themes:  function () { return T[lang].pickTheme; },
-    intro:   function () { return T[lang].introT; },
-    quiz:    function () { return mode === 'exam' ? T[lang].introT : T[lang].modePracT; },
-    results: function () { return T[lang].byTheme; },
-    review:  function () { return T[lang].reviewAll; }
+    setup:   function () { return TT().pickMode; },
+    themes:  function () { return TT().pickTheme; },
+    intro:   function () { return TT().introT; },
+    quiz:    function () { return mode === 'exam' ? TT().introT : TT().modePracT; },
+    results: function () { return TT().byTheme; },
+    review:  function () { return TT().reviewAll; }
   };
 
   function go(name) {
@@ -359,7 +377,7 @@
 
   /* ---------------- Home ---------------- */
   function renderHome() {
-    const t = T[lang];
+    const t = TT();
     const stats = load(LS.stats, {});
     const hist  = load(LS.hist, []);
     const wrong = load(LS.wrong, []);
@@ -410,7 +428,7 @@
 
   /* ---------------- Practice setup ---------------- */
   function renderSetup() {
-    const t = T[lang];
+    const t = TT();
     const opts = [
       { k:'random', ico:'🔀', ti:t.ordRandT, de:t.ordRandD },
       { k:'theme',  ico:'🎯', ti:t.ordThemeT, de:t.ordThemeD },
@@ -430,7 +448,7 @@
     $('#themeList').innerHTML = CATEGORIES.map(function (c) {
       const n = inCat(c.id).length;
       const s = stats[c.id] || { seen:0, ok:0 };
-      const sub = n + ' ' + T[lang].statQ + (s.seen ? ' · ' + Math.round(s.ok / s.seen * 100) + '%' : '');
+      const sub = n + ' ' + TT().statQ + (s.seen ? ' · ' + Math.round(s.ok / s.seen * 100) + '%' : '');
       return '<button class="card" data-theme="' + c.id + '">' +
         '<span class="card-ico">' + c.icon + '</span>' +
         '<span class="card-body"><span class="card-t">' + esc(catName(c)) + '</span>' +
@@ -550,14 +568,14 @@
       fb.hidden = false;
       fb.className = 'feedback ' + (right ? 'ok' : 'bad');
       fb.innerHTML = '<div class="fb-head">' + (right ? '✓ ' : '✕ ') +
-        esc(right ? T[lang].correct : T[lang].incorrect) + '</div>' +
+        esc(right ? TT().correct : TT().incorrect) + '</div>' +
         '<div class="fb-body">' + esc(loc.e) + '</div>';
     } else { fb.hidden = true; }
 
     $('#btnPrev').style.visibility = idx === 0 ? 'hidden' : 'visible';
     const last = idx === deck.length - 1;
     const nx = $('#btnNext');
-    nx.textContent = last ? (mode === 'exam' ? T[lang].seeResults : T[lang].finish) : T[lang].next;
+    nx.textContent = last ? (mode === 'exam' ? TT().seeResults : TT().finish) : TT().next;
     nx.disabled = (mode !== 'exam') && !answered;
   }
 
@@ -643,7 +661,7 @@
   }
 
   function renderResults(score, total, timedOut) {
-    const t = T[lang];
+    const t = TT();
     const isExam = mode === 'exam';
     const pct = total ? score / total : 0;
     const passed = isExam ? score >= EXAM_PASS : pct >= 0.8;
@@ -681,7 +699,7 @@
 
   /* ---------------- Review — grouped by section ---------------- */
   function renderReview() {
-    const t = T[lang];
+    const t = TT();
     const keep = function (it) {
       const ok = it.picked === it.q.a;
       if (reviewFilter === 'wrong') return !ok;
@@ -731,7 +749,8 @@
   document.addEventListener('click', function (e) {
     const langBtn = e.target.closest('.lang-toggle button');
     if (langBtn) {
-      lang = langBtn.dataset.lang;
+      const want = langBtn.dataset.lang;
+      lang = (LANGS.indexOf(want) !== -1) ? want : 'fr';
       applyLang();
       renderHome();
       const scr = document.body.dataset.screen;

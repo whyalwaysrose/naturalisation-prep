@@ -396,6 +396,18 @@ body.sheet-open { overflow: hidden; }
   display: flex; align-items: center; }
 .disclosure-body { padding: 0 15px 15px; font-size: 13.5px; color: var(--ink-2); line-height: 1.6; }
 .src-links { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+
+/* "How this differs from the real exam" — flagged, because getting this wrong
+   is how someone walks into the exam over-confident. */
+.disclosure-warn { border-color: #e0c37a; margin-top: 10px; }
+@media (prefers-color-scheme: dark) { .disclosure-warn { border-color: #4a3c18; } }
+.disclosure-warn > summary { color: var(--warn); }
+@media (prefers-color-scheme: dark) { .disclosure-warn > summary { color: #e6b95c; } }
+.disclosure-warn > summary::before { content: "⚠ "; }
+.diff-list { margin: 0; padding-left: 18px; }
+.diff-list li { margin-bottom: 10px; line-height: 1.55; }
+.diff-list li:last-child { margin-bottom: 0; }
+.diff-list b { color: var(--ink); }
 .src-links a { font-weight: 600; }
 
 .app-footer { max-width: 680px; margin: 0 auto; padding: 20px var(--pad) calc(28px + var(--safe-b)); }

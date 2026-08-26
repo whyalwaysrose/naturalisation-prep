@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Examen civique">
 <meta name="description" content="Préparation à l'examen civique de naturalisation française — 243 questions officielles, examen blanc chronométré, correction détaillée.">
 <title>Examen civique — préparation à la naturalisation</title>
-<link rel="stylesheet" href="assets/css/style.css?v=14">
+<link rel="stylesheet" href="assets/css/style.css?v=15">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='11' height='32' fill='%230055A4'/><rect x='11' width='10' height='32' fill='%23fff'/><rect x='21' width='11' height='32' fill='%23EF4135'/></svg>">
 </head>
 <body>
@@ -84,11 +84,16 @@
         <p data-t="srcP1"><strong>Les intitulés des questions</strong> sont repris mot pour mot de la liste officielle publiée par le ministère de l'Intérieur (Direction générale des étrangers en France), version du 12 décembre 2025.</p>
         <p data-t="srcP2"><strong>Les propositions de réponse, les bonnes réponses et les explications</strong> ont été rédigées pour ce site. Le ministère ne publie pas les options de réponse : elles ne sont donc pas officielles. Les 12 « mises en situation » de l'examen réel ne sont pas publiques et ne figurent pas ici.</p>
         <p data-t="srcP3">Vérifiez toujours auprès des sources officielles avant votre examen.</p>
-        <p class="src-links">
+        <p class="src-links" id="srcLinks">
           <a href="https://www.immigration.interieur.gouv.fr/documentation/examen-civique/questions-de-connaissance-pour-lexamen-civique-nationalite-francaise.html" target="_blank" rel="noopener">Liste officielle des questions ↗</a>
           <a href="https://formation-civique.interieur.gouv.fr/examen-civique/informations-g%C3%A9n%C3%A9rales-sur-lexamen-civique/" target="_blank" rel="noopener">Modalités de l'examen ↗</a>
         </p>
       </div>
+    </details>
+
+    <details class="disclosure disclosure-warn">
+      <summary data-t="diffT">En quoi ce site diffère de l'examen réel</summary>
+      <div class="disclosure-body" data-t="diffBody"></div>
     </details>
   </section>
 
@@ -204,7 +209,7 @@
   window.addEventListener('load', function () {
     setTimeout(function () {
       if (!document.body.dataset.screen) {
-        show("L'application n'a pas démarré / the app did not start. Build attendu : v14.");
+        show("L'application n'a pas démarré / the app did not start. Build attendu : v15.");
       }
     }, 1200);
   });
@@ -230,13 +235,13 @@
 <script>window.goatcounter = { no_onload: true };</script>
 <script data-goatcounter="https://whyalwaysrose.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
-<script src="data/questions.js?v=14"></script>
-<script src="data/q-valeurs.js?v=14"></script>
-<script src="data/q-institutions.js?v=14"></script>
-<script src="data/q-droits.js?v=14"></script>
-<script src="data/q-histoire.js?v=14"></script>
-<script src="data/q-societe.js?v=14"></script>
-<script src="data/q-situations.js?v=14"></script>
-<script src="assets/js/app.js?v=14"></script>
+<script src="data/questions.js?v=15"></script>
+<script src="data/q-valeurs.js?v=15"></script>
+<script src="data/q-institutions.js?v=15"></script>
+<script src="data/q-droits.js?v=15"></script>
+<script src="data/q-histoire.js?v=15"></script>
+<script src="data/q-societe.js?v=15"></script>
+<script src="data/q-situations.js?v=15"></script>
+<script src="assets/js/app.js?v=15"></script>
 </body>
 </html>

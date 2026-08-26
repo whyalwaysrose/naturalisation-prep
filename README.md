@@ -256,6 +256,31 @@ If you find a wrong answer or a stale fact, open an issue or a PR against the re
 
 ---
 
+## How this site differs from the real exam
+
+Shown in the app itself, under **"En quoi ce site diffère de l'examen réel"** on
+the home screen, so that anyone practising sees it without reading this file.
+
+1. **The answer options will not be the same.** The Ministry publishes the
+   question wordings, never the four options. A question that feels easy here
+   may be hard on the day, and the reverse.
+2. **The 12 situational questions are invented.** None are published. Ours
+   reproduce the format and expected reasoning, not the real content.
+3. **This site is a little too generous.** In the bank the correct answer is on
+   average slightly longer than the wrong ones, so it can sometimes be guessed
+   without knowing. Scores here likely overstate real performance.
+4. **The real exam is in French only**, on a computer or tablet, at an approved
+   centre, under supervision. The English here is a study aid, not an option.
+5. **Our answers may be wrong.** Not official; where they conflict with an
+   official source, the official source is right.
+6. **The official list can change** without notice.
+7. **Nothing here reproduces exam conditions** — no invigilator, sessions can be
+   paused and resumed, and the pressure is not the same.
+8. **The civic exam is only one step.** Naturalisation also requires French at
+   B2 and an interview at the prefecture, neither of which this site covers.
+9. **This site has no official standing.** Passing a mock here says nothing
+   about the real result.
+
 ## Browser support
 
 Built to work on the phones people actually own, not just current Chrome.

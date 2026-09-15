@@ -35,9 +35,9 @@
 <meta name="twitter:title" content="Examen civique — entraînement gratuit à la naturalisation">
 <meta name="twitter:description" content="Les 243 questions officielles, un examen blanc au format réel et une correction expliquée. Gratuit, sans publicité, sans inscription. Site non officiel.">
 <meta name="twitter:image" content="https://whyalwaysrose.github.io/naturalisation-prep/assets/og.png?v=18">
-<link rel="manifest" href="manifest.json?v=24">
+<link rel="manifest" href="manifest.json?v=25">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="stylesheet" href="assets/css/style.css?v=24">
+<link rel="stylesheet" href="assets/css/style.css?v=25">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='11' height='32' fill='%230055A4'/><rect x='11' width='10' height='32' fill='%23fff'/><rect x='21' width='11' height='32' fill='%23EF4135'/></svg>">
 </head>
 <body>
@@ -238,7 +238,7 @@
   window.addEventListener('load', function () {
     setTimeout(function () {
       if (!document.body.dataset.screen) {
-        show("L'application n'a pas démarré / the app did not start. Build attendu : v24.");
+        show("L'application n'a pas démarré / the app did not start. Build attendu : v25.");
       }
     }, 1200);
   });
@@ -264,21 +264,21 @@
 <script>window.goatcounter = { no_onload: true };</script>
 <script data-goatcounter="https://whyalwaysrose.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
-<script src="data/questions.js?v=24"></script>
-<script src="data/q-valeurs.js?v=24"></script>
-<script src="data/q-institutions.js?v=24"></script>
-<script src="data/q-droits.js?v=24"></script>
-<script src="data/q-histoire.js?v=24"></script>
-<script src="data/q-societe.js?v=24"></script>
-<script src="data/q-situations.js?v=24"></script>
-<script src="assets/js/app.js?v=24"></script>
+<script src="data/questions.js?v=25"></script>
+<script src="data/q-valeurs.js?v=25"></script>
+<script src="data/q-institutions.js?v=25"></script>
+<script src="data/q-droits.js?v=25"></script>
+<script src="data/q-histoire.js?v=25"></script>
+<script src="data/q-societe.js?v=25"></script>
+<script src="data/q-situations.js?v=25"></script>
+<script src="assets/js/app.js?v=25"></script>
 
 <!-- Offline support. Registered last so it can never delay first paint, and
      with the version in the url so a deploy always installs a fresh worker. -->
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
-    navigator.serviceWorker.register('sw.js?v=24', { scope: './' })
+    navigator.serviceWorker.register('sw.js?v=25', { scope: './' })
       .catch(function () { /* offline support is a bonus, never a requirement */ });
   });
 }

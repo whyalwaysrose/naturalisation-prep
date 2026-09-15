@@ -23,9 +23,30 @@
 const VERSION = new URL(self.location.href).searchParams.get('v') || 'dev';
 const CACHE = 'examen-civique-' + VERSION;
 
-/* Enough to open the app with no network. Everything else is cached the first
-   time it is requested, which keeps this list from drifting out of date. */
-const CORE = ['./', './index.html', './manifest.json'];
+/* Everything the app needs, precached at install.
+
+   Relying on runtime caching alone was not enough: on a first visit the page
+   has already fetched its css, js and question data before this worker takes
+   control, so nothing but the html ends up cached and offline only starts
+   working on the second visit.
+
+   The ?v= is taken from this worker's own version, which is sound precisely
+   because index.html bumps every asset's ?v= together with the worker's. If
+   that ever stops being true these urls miss, addAll rejects, and the catch
+   below leaves the app working exactly as it does without a worker. */
+const ASSETS = [
+  'assets/css/style.css',
+  'assets/js/app.js',
+  'data/questions.js',
+  'data/q-valeurs.js',
+  'data/q-institutions.js',
+  'data/q-droits.js',
+  'data/q-histoire.js',
+  'data/q-societe.js',
+  'data/q-situations.js'
+];
+const CORE = ['./', './index.html', './manifest.json?v=' + VERSION]
+  .concat(ASSETS.map(function (p) { return './' + p + '?v=' + VERSION; }));
 
 self.addEventListener('install', function (e) {
   e.waitUntil(

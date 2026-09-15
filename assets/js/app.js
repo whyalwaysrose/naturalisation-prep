@@ -39,12 +39,12 @@
   ];                                          // 28 knowledge + 12 situational = 40
 
   const LS = { lang:'exc.lang', hist:'exc.hist', stats:'exc.stats', wrong:'exc.wrong',
-               session:'exc.session' };
+               session:'exc.session', srs:'exc.srs' };
 
   /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
      a phone, whether the page being looked at is the current build or a cached
      one — the usual cause of "the buttons stopped working". */
-  const BUILD = '2026.09.15-20';
+  const BUILD = '2026.09.15-21';
 
   /* ---------------- i18n ---------------- */
   const T = {
@@ -77,6 +77,15 @@
       allQ:'Toutes les questions',
       mistakesN:function(n){return n+' question'+(n>1?'s':'')+' à revoir';},
       noMistakes:'Aucune erreur enregistrée pour le moment',
+      srsT:'Révision du jour',
+      srsDue:function(n){return n+' question'+(n>1?'s':'')+' à réviser';},
+      srsNew:function(n){return n+' nouvelle'+(n>1?'s':'');},
+      srsOnlyNew:function(n){return 'Rien à réviser : '+n+' nouvelle'+(n>1?'s':'')+' question'+(n>1?'s':'')+' à découvrir';},
+      srsNothing:function(d){return d<=0 ? 'Tout est à jour' : (d===1 ? 'Tout est à jour — prochaine révision demain' : 'Tout est à jour — prochaine révision dans '+d+' jours');},
+      srsNothingYet:'Commencez par un entraînement : les questions vues seront programmées ici',
+      srsProgressT:'Mémorisation',
+      srsMastered:function(n,t){return n+' question'+(n>1?'s':'')+' sur '+t+' bien mémorisée'+(n>1?'s':'');},
+      srsSeen:function(n,t){return n+' question'+(n>1?'s':'')+' sur '+t+' déjà rencontrée'+(n>1?'s':'');},
       timeUp:'Temps écoulé',
       resumeCardT:'Reprendre où vous en étiez',
       sheetT:'Session en cours', sheetResume:'Reprendre', sheetRestart:'Recommencer à zéro',
@@ -84,7 +93,7 @@
       sheetDesc:function(what,cur,tot){return 'Vous avez une session en cours : '+what+', question '+cur+' sur '+tot+'. Voulez-vous la reprendre ou repartir de zéro ?';},
       resumeSub:function(what,cur,tot){return what+' · question '+cur+'/'+tot;},
       noStore:"Stockage du navigateur indisponible : votre progression sera perdue en fermant l'onglet. Désactivez le blocage des cookies ou la navigation privée pour la conserver.",
-      mExam:'Examen blanc', mPractice:'Entraînement', mMistakes:'Révision des erreurs',
+      mExam:'Examen blanc', mPractice:'Entraînement', mMistakes:'Révision du jour',
       oRandom:'toutes les questions mélangées', oSeq:'ordre officiel',
       sitT:'Mises en situation', sitBadge:'Mise en situation · non officielle',
       sitD:function(n){return n+" scénarios rédigés pour ce site — le ministère n'en publie aucun";},
@@ -126,6 +135,15 @@
       allQ:'All questions',
       mistakesN:function(n){return n+' question'+(n>1?'s':'')+' to review';},
       noMistakes:'No mistakes recorded yet',
+      srsT:"Today's review",
+      srsDue:function(n){return n+' question'+(n>1?'s':'')+' due';},
+      srsNew:function(n){return n+' new';},
+      srsOnlyNew:function(n){return 'Nothing due — '+n+' new question'+(n>1?'s':'')+' to learn';},
+      srsNothing:function(d){return d<=0 ? 'All caught up' : (d===1 ? 'All caught up — next review tomorrow' : 'All caught up — next review in '+d+' days');},
+      srsNothingYet:'Start with some practice: whatever you see gets scheduled here',
+      srsProgressT:'Retention',
+      srsMastered:function(n,t){return n+' of '+t+' questions well retained';},
+      srsSeen:function(n,t){return n+' of '+t+' questions seen so far';},
       timeUp:'Time is up',
       resumeCardT:'Pick up where you left off',
       sheetT:'Session in progress', sheetResume:'Resume', sheetRestart:'Start over',
@@ -133,7 +151,7 @@
       sheetDesc:function(what,cur,tot){return 'You have a session in progress: '+what+', question '+cur+' of '+tot+'. Resume it, or start again from scratch?';},
       resumeSub:function(what,cur,tot){return what+' · question '+cur+'/'+tot;},
       noStore:'Browser storage is unavailable, so your progress will be lost when you close the tab. Turn off cookie blocking or private browsing to keep it.',
-      mExam:'Mock exam', mPractice:'Practice', mMistakes:'Mistake review',
+      mExam:'Mock exam', mPractice:'Practice', mMistakes:"Today's review",
       oRandom:'all questions shuffled', oSeq:'official order',
       sitT:'Situational questions', sitBadge:'Situational · not official',
       sitD:function(n){return n+' scenarios written for this site — the Ministry publishes none';},
@@ -276,6 +294,97 @@
     store.set(LS.lang, lang);
   }
 
+  /* ---------------- Spaced repetition (Leitner) ----------------
+     The old model was binary: answer a question correctly once and it left the
+     revision list for good, whether you knew it cold or guessed. With 293
+     questions and a fixed exam date, what decides whether they stick is being
+     shown again at widening intervals.
+
+     Five boxes. A wrong answer sends a question back to box 1 regardless of
+     where it was; a right answer promotes it one box. The interval is how many
+     days until it comes round again:
+
+         box 1 → tomorrow      box 2 → 2 days     box 3 → 4 days
+         box 4 → 8 days        box 5 → 16 days
+
+     Everything lives in localStorage alongside the rest; no accounts, no
+     backend, and it degrades to memory when storage is blocked.              */
+  const SRS_BOXES = 5;
+  const BOX_DAYS  = [0, 1, 2, 4, 8, 16];   // indexed by box number, 1-5
+  const NEW_PER_SESSION = 10;              // new questions introduced per review
+
+  /* Day number from local midnight, so "due today" means today where the user
+     is, and the schedule does not drift with the clock. */
+  function todayNum() {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return Math.round(d.getTime() / 86400000);
+  }
+
+  function srsAll() { return load(LS.srs, null); }
+
+  /* First run migrates the old mistakes list: anything previously wrong starts
+     in box 1, due immediately, so no history is thrown away. */
+  function srsEnsure() {
+    let m = srsAll();
+    if (m) return m;
+    m = {};
+    load(LS.wrong, []).forEach(function (id) {
+      m[id] = { box: 1, due: todayNum(), seen: 1, wrong: 1 };
+    });
+    save(LS.srs, m);
+    return m;
+  }
+
+  function recordSRS(q, ok) {
+    const m = srsEnsure();
+    const c = m[q.id] || { box: 1, due: todayNum(), seen: 0, wrong: 0 };
+    c.seen = (c.seen || 0) + 1;
+    if (ok) {
+      c.box = Math.min((c.box || 1) + 1, SRS_BOXES);
+    } else {
+      c.box = 1;
+      c.wrong = (c.wrong || 0) + 1;
+    }
+    c.due = todayNum() + BOX_DAYS[c.box];
+    m[q.id] = c;
+    save(LS.srs, m);
+  }
+
+  /* Questions whose turn has come round, most overdue first. */
+  function srsDue() {
+    const m = srsEnsure(), t = todayNum();
+    return QUESTIONS
+      .filter(function (q) { return m[q.id] && m[q.id].due <= t; })
+      .sort(function (a, b) { return m[a.id].due - m[b.id].due; });
+  }
+
+  function srsNew() {
+    const m = srsEnsure();
+    return QUESTIONS.filter(function (q) { return !m[q.id]; });
+  }
+
+  function srsStats() {
+    const m = srsEnsure();
+    let learned = 0, mastered = 0;
+    QUESTIONS.forEach(function (q) {
+      const c = m[q.id];
+      if (!c) return;
+      learned++;
+      if (c.box >= SRS_BOXES) mastered++;
+    });
+    const due = srsDue().length, fresh = srsNew().length;
+    let next = null;
+    if (!due) {
+      QUESTIONS.forEach(function (q) {
+        const c = m[q.id];
+        if (c && (next === null || c.due < next)) next = c.due;
+      });
+    }
+    return { due: due, fresh: fresh, learned: learned, mastered: mastered,
+             total: QUESTIONS.length, nextDue: next };
+  }
+
   /* ---------------- Session persistence ----------------
      A run in progress is written to localStorage after every answer and every
      move between questions, so closing the tab, locking the phone or backing
@@ -327,6 +436,7 @@
     const t = TT();
     if (s.mode === 'exam')     return t.mExam;
     if (s.mode === 'mistakes') return t.mMistakes;
+    if (s.theme === '__sit')   return t.mPractice + ' — ' + t.sitT;
     if (s.theme)               return t.mPractice + ' — ' + catName(cat(s.theme));
     if (s.order === 'seq')     return t.mPractice + ' — ' + t.oSeq;
     return t.mPractice + ' — ' + t.oRandom;
@@ -448,9 +558,45 @@
       $('#resumeBox').innerHTML = '';
     }
 
+    // --- spaced repetition card: the daily driver ---
+    const srs = srsStats();
     const mc = $('#mistakeCount');
-    if (wrong.length) { mc.textContent = t.mistakesN(wrong.length); $('#cardMistakes').disabled = false; }
-    else { mc.textContent = t.noMistakes; $('#cardMistakes').disabled = true; }
+    const card = $('#cardMistakes');
+    const title = card.querySelector('.card-t');
+    title.textContent = t.srsT;
+    if (srs.due) {
+      mc.textContent = t.srsDue(srs.due) + (srs.fresh ? ' · ' + t.srsNew(Math.min(srs.fresh, NEW_PER_SESSION)) : '');
+      card.disabled = false;
+    } else if (srs.fresh) {
+      mc.textContent = t.srsOnlyNew(Math.min(srs.fresh, NEW_PER_SESSION));
+      card.disabled = false;
+    } else {
+      mc.textContent = srs.nextDue !== null ? t.srsNothing(srs.nextDue - todayNum()) : t.srsNothingYet;
+      card.disabled = true;
+    }
+
+    // --- mastery bar: how much of the bank is actually retained ---
+    const mb = $('#masteryBox');
+    if (mb) {
+      if (srs.learned) {
+        const pct = Math.round(srs.mastered / srs.total * 100);
+        mb.innerHTML = '<h2 class="sec-h">' + esc(t.srsProgressT) + '</h2>' +
+          '<div class="theme-progress"><div class="tp-row">' +
+            '<span class="tp-ico">🧠</span>' +
+            '<div class="tp-main"><div class="tp-name">' +
+              esc(t.srsMastered(srs.mastered, srs.total)) + '</div>' +
+              '<div class="tp-bar"><div class="tp-fill" style="width:' + pct + '%"></div></div></div>' +
+            '<span class="tp-pct">' + pct + '%</span>' +
+          '</div><div class="tp-row">' +
+            '<span class="tp-ico">📖</span>' +
+            '<div class="tp-main"><div class="tp-name">' + esc(t.srsSeen(srs.learned, srs.total)) + '</div>' +
+            '<div class="tp-bar"><div class="tp-fill" style="width:' + Math.round(srs.learned / srs.total * 100) + '%"></div></div></div>' +
+            '<span class="tp-pct">' + Math.round(srs.learned / srs.total * 100) + '%</span>' +
+          '</div></div>';
+      } else {
+        mb.innerHTML = '';
+      }
+    }
 
     $('#themeProgress').innerHTML = CATEGORIES.map(function (c) {
       const s = stats[c.id] || { seen:0, ok:0 };
@@ -566,9 +712,11 @@
     renderQuestion();
   }
 
+  /* A day's review: everything that has come due, then a few new questions so
+     there is always forward progress once the backlog is clear. */
   function startMistakes() {
-    const ids = load(LS.wrong, []);
-    const list = QUESTIONS.filter(function (q) { return ids.indexOf(q.id) !== -1; });
+    const due = srsDue();
+    const list = due.concat(shuffle(srsNew()).slice(0, NEW_PER_SESSION));
     if (!list.length) return;
     mode = 'mistakes';
     clearSession();
@@ -654,6 +802,7 @@
     if (mode !== 'exam') {
       recordStat(item.q, orig === item.q.a);
       recordWrong(item.q, orig === item.q.a);
+      recordSRS(item.q, orig === item.q.a);
     }
     renderQuestion();
     saveSession();
@@ -696,6 +845,7 @@
         const ok = it.picked === it.q.a;
         recordStat(it.q, ok);
         recordWrong(it.q, ok);
+        recordSRS(it.q, ok);
       });
     }
     const score = deck.filter(function (it) { return it.picked === it.q.a; }).length;

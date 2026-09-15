@@ -156,10 +156,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'ins20', cat:'institutions', a:2,
   fr:{ q:"Quelle est la durée du mandat du Président de la République française ?",
-       c:["4 ans","7 ans","5 ans","6 ans"],
+       c:["4 ans","7 ans","5 ans","6 ans"], w:["Aucun mandat présidentiel français n'a duré 4 ans.","7 ans était la durée du septennat, abandonné en 2000.",null,"6 ans est la durée des mandats locaux."],
        e:"Depuis la réforme du quinquennat adoptée par référendum en 2000 et appliquée en 2002, le Président est élu pour cinq ans, renouvelable une fois consécutivement." },
   en:{ q:"How long is the French President's term?",
-       c:["4 years","7 years","5 years","6 years"],
+       c:["4 years","7 years","5 years","6 years"], w:["No French presidential term has lasted 4 years.","7 years was the old septennat, abandoned in 2000.",null,"6 years is the length of local mandates."],
        e:"Since the five-year term reform approved by referendum in 2000 and applied from 2002, the President is elected for five years, renewable once consecutively." } },
 
 { id:'ins21', cat:'institutions', a:0,
@@ -172,10 +172,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'ins22', cat:'institutions', a:3,
   fr:{ q:"Quelle est la durée du mandat des sénateurs ?",
-       c:["4 ans","5 ans","9 ans","6 ans"],
+       c:["4 ans","5 ans","9 ans","6 ans"], w:["4 ans ne correspond à aucun mandat français.","5 ans est la durée du mandat des députés et du Président, pas des sénateurs.","9 ans est la durée du mandat des membres du Conseil constitutionnel.",null],
        e:"Les sénateurs sont élus pour six ans au suffrage universel indirect, par un collège de grands électeurs. Le Sénat est renouvelé par moitié tous les trois ans." },
   en:{ q:"How long is a senator's term?",
-       c:["4 years","5 years","9 years","6 years"],
+       c:["4 years","5 years","9 years","6 years"], w:["4 years matches no French mandate.","5 years is the term of deputies and of the President, not senators.","9 years is the term of Constitutional Council members.",null],
        e:"Senators are elected for six years by indirect universal suffrage, through a college of electors. Half the Senate is renewed every three years." } },
 
 { id:'ins23', cat:'institutions', a:1,
@@ -244,10 +244,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'ins31', cat:'institutions', a:2,
   fr:{ q:"Qui assure l'intérim du président de la République en cas de décès ?",
-       c:["Le Premier ministre","Le président de l'Assemblée nationale","Le président du Sénat","Le ministre de l'Intérieur"],
+       c:["Le Premier ministre","Le président de l'Assemblée nationale","Le président du Sénat","Le ministre de l'Intérieur"], w:["Le Premier ministre dirige le Gouvernement mais n'assure jamais l'intérim de la présidence.","C'est le président du Sénat, non celui de l'Assemblée.",null,"Aucun ministre n'assure cet intérim."],
        e:"En cas de vacance de la présidence, l'intérim est assuré par le président du Sénat, le temps d'organiser une nouvelle élection sous 20 à 35 jours." },
   en:{ q:"Who acts as interim President if the President dies?",
-       c:["The Prime Minister","The President of the National Assembly","The President of the Senate","The Interior Minister"],
+       c:["The Prime Minister","The President of the National Assembly","The President of the Senate","The Interior Minister"], w:["The Prime Minister leads the government but never stands in as head of State.","It is the President of the Senate, not of the Assembly.",null,"No minister stands in."],
        e:"If the presidency falls vacant, the President of the Senate acts as interim head of State until a new election is held within 20 to 35 days." } },
 
 { id:'ins32', cat:'institutions', a:3,
@@ -268,10 +268,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'ins34', cat:'institutions', a:1,
   fr:{ q:"Combien y a-t-il de départements en France ?",
-       c:["96","101","83","110"],
+       c:["96","101","83","110"], w:["96 est le nombre de départements métropolitains ; il faut ajouter les cinq départements d'outre-mer.",null,null,null],
        e:"La France compte 101 départements : 96 en métropole et 5 en outre-mer (Guadeloupe, Martinique, Guyane, La Réunion et Mayotte)." },
   en:{ q:"How many departments does France have?",
-       c:["96","101","83","110"],
+       c:["96","101","83","110"], w:["96 is the number of mainland departments; the five overseas ones must be added.",null,null,null],
        e:"France has 101 departments: 96 in mainland France and 5 overseas (Guadeloupe, Martinique, French Guiana, Réunion and Mayotte)." } },
 
 { id:'ins35', cat:'institutions', a:2,
@@ -380,10 +380,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'ins48', cat:'institutions', a:0,
   fr:{ q:"Quel traité concerne la construction de l'Union européenne ?",
-       c:["Le traité de Rome","Le traité de Versailles","Le traité de Vienne","Le traité de Tordesillas"],
+       c:["Le traité de Rome","Le traité de Versailles","Le traité de Vienne","Le traité de Tordesillas"], w:[null,"Le traité de Versailles (1919) met fin à la Première Guerre mondiale.","Le congrès de Vienne (1815) réorganise l'Europe après Napoléon.","Le traité de Tordesillas (1494) partage le Nouveau Monde entre l'Espagne et le Portugal."],
        e:"Le traité de Rome, signé en 1957, crée la Communauté économique européenne (CEE), ancêtre de l'Union européenne. Le traité de Versailles (1919) mettait fin à la Première Guerre mondiale." },
   en:{ q:"Which treaty concerns the building of the European Union?",
-       c:["The Treaty of Rome","The Treaty of Versailles","The Treaty of Vienna","The Treaty of Tordesillas"],
+       c:["The Treaty of Rome","The Treaty of Versailles","The Treaty of Vienna","The Treaty of Tordesillas"], w:[null,"The Treaty of Versailles (1919) ended the First World War.","The Congress of Vienna (1815) reorganised Europe after Napoleon.","The Treaty of Tordesillas (1494) split the New World between Spain and Portugal."],
        e:"The Treaty of Rome, signed in 1957, created the European Economic Community, forerunner of the EU. The Treaty of Versailles (1919) ended the First World War." } },
 
 { id:'ins49', cat:'institutions', a:1,
@@ -404,10 +404,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'ins51', cat:'institutions', a:3,
   fr:{ q:"De quoi est composé le drapeau européen ?",
-       c:["De 27 étoiles blanches sur fond vert","D'une croix bleue sur fond blanc","De 15 étoiles rouges sur fond bleu","De 12 étoiles dorées disposées en cercle sur fond bleu"],
+       c:["De 27 étoiles blanches sur fond vert","D'une croix bleue sur fond blanc","De 15 étoiles rouges sur fond bleu","De 12 étoiles dorées disposées en cercle sur fond bleu"], w:["Le nombre d'étoiles ne suit pas le nombre d'États membres : il est resté douze.","C'est le drapeau de la Finlande, pas celui de l'Union.","Ni le nombre ni les couleurs ne correspondent.",null],
        e:"Les douze étoiles ne représentent pas le nombre d'États membres : le cercle symbolise l'unité et la solidarité, et douze est un chiffre traditionnel de perfection." },
   en:{ q:"What does the European flag consist of?",
-       c:["27 white stars on a green background","A blue cross on a white background","15 red stars on a blue background","12 golden stars in a circle on a blue background"],
+       c:["27 white stars on a green background","A blue cross on a white background","15 red stars on a blue background","12 golden stars in a circle on a blue background"], w:["The number of stars does not track the number of member States: it has stayed at twelve.","That is Finland's flag, not the Union's.","Neither the number nor the colours match.",null],
        e:"The twelve stars do not stand for the number of member States: the circle symbolises unity and solidarity, and twelve is a traditional number of completeness." } },
 
 { id:'ins52', cat:'institutions', a:0,

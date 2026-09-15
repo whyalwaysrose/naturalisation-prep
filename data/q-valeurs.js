@@ -180,10 +180,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'val23', cat:'valeurs', a:1,
   fr:{ q:"En France, il est possible pour l'État de financer :",
-       c:["La construction de lieux de culte","Des associations culturelles, sportives ou humanitaires","Le salaire des ministres du culte","Les activités religieuses des écoles privées"],
+       c:["La construction de lieux de culte","Des associations culturelles, sportives ou humanitaires","Le salaire des ministres du culte","Les activités religieuses des écoles privées"], w:["La loi de 1905 l'interdit expressément : la République ne subventionne aucun culte.",null,"C'est précisément ce que la loi de 1905 exclut : aucun ministre du culte n'est salarié par l'État.","L'État finance l'enseignement sous contrat, jamais l'activité religieuse elle-même."],
        e:"La loi de 1905 dispose que « la République ne reconnaît, ne salarie ni ne subventionne aucun culte ». L'État peut en revanche subventionner des associations non cultuelles." },
   en:{ q:"In France, the State may fund:",
-       c:["The building of places of worship","Cultural, sporting or humanitarian associations","The salaries of religious ministers","Religious activities in private schools"],
+       c:["The building of places of worship","Cultural, sporting or humanitarian associations","The salaries of religious ministers","Religious activities in private schools"], w:["The 1905 law expressly forbids it: the Republic subsidises no religion.",null,"This is exactly what the 1905 law rules out: no religious minister is paid by the State.","The State funds contracted teaching, never the religious activity itself."],
        e:"The 1905 law states that \"the Republic neither recognises, pays nor subsidises any religion\". It may, however, fund non-religious associations." } },
 
 { id:'val24', cat:'valeurs', a:2,
@@ -220,10 +220,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'val28', cat:'valeurs', a:2,
   fr:{ q:"Quel symbole religieux peut être porté dans une école publique dans le respect de la laïcité ?",
-       c:["Un grand crucifix visible","Un voile intégral","Un signe discret, comme une petite médaille sous les vêtements","Aucun, tout signe est interdit y compris discret"],
+       c:["Un grand crucifix visible","Un voile intégral","Un signe discret, comme une petite médaille sous les vêtements","Aucun, tout signe est interdit y compris discret"], w:["Un signe ostensible, visible et manifeste, est précisément ce que la loi de 2004 interdit à l'école publique.",null,null,"C'est l'erreur la plus courante : la loi vise les signes ostensibles, pas tout signe. Un signe discret reste permis."],
        e:"La loi du 15 mars 2004 interdit à l'école publique les signes religieux ostensibles, c'est-à-dire visibles et manifestes. Les signes discrets restent autorisés." },
   en:{ q:"Which religious symbol may be worn in a state school while respecting laïcité?",
-       c:["A large visible crucifix","A full-face veil","A discreet sign, such as a small medal under clothing","None, every sign is banned including discreet ones"],
+       c:["A large visible crucifix","A full-face veil","A discreet sign, such as a small medal under clothing","None, every sign is banned including discreet ones"], w:["A conspicuous, openly visible sign is exactly what the 2004 law bans in state schools.",null,null,"The most common mistake: the law targets conspicuous signs, not every sign. A discreet one is still allowed."],
        e:"The law of 15 March 2004 bans conspicuous religious signs in state schools — those that are visibly obvious. Discreet signs remain permitted." } },
 
 { id:'val29', cat:'valeurs', a:0,
@@ -244,10 +244,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'val31', cat:'valeurs', a:3,
   fr:{ q:"Quelle institution française doit rester neutre en matière de religion ?",
-       c:["Uniquement l'école publique","Uniquement les tribunaux","Uniquement les hôpitaux","L'ensemble des services publics"],
+       c:["Uniquement l'école publique","Uniquement les tribunaux","Uniquement les hôpitaux","L'ensemble des services publics"], w:["L'école publique est concernée, mais elle n'est pas la seule : la neutralité vaut pour tout le service public.","Les tribunaux aussi, mais pas eux seuls.","Les hôpitaux aussi, mais pas eux seuls.",null],
        e:"La neutralité s'impose à tous les services publics : mairies, écoles, hôpitaux, tribunaux, police. Les agents ne doivent manifester aucune préférence religieuse dans leurs fonctions." },
   en:{ q:"Which French institution must remain neutral in religious matters?",
-       c:["Only state schools","Only the courts","Only hospitals","All public services"],
+       c:["Only state schools","Only the courts","Only hospitals","All public services"], w:["State schools are covered, but not only them: neutrality applies across the whole public service.","Courts too, but not only courts.","Hospitals too, but not only hospitals.",null],
        e:"Neutrality applies to every public service: town halls, schools, hospitals, courts, police. Officials must show no religious preference while on duty." } },
 
 { id:'val32', cat:'valeurs', a:2,
@@ -268,10 +268,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'val34', cat:'valeurs', a:1,
   fr:{ q:"Qui doit respecter et veiller à la neutralité religieuse dans les services publics ?",
-       c:["Les usagers uniquement","Les agents publics dans l'exercice de leurs fonctions","Les élus uniquement","Les visiteurs étrangers"],
+       c:["Les usagers uniquement","Les agents publics dans l'exercice de leurs fonctions","Les élus uniquement","Les visiteurs étrangers"], w:["C'est l'inverse : l'usager garde sa liberté d'expression religieuse, c'est l'agent qui est tenu à la neutralité.",null,"Les élus sont concernés, mais l'obligation vise l'ensemble des agents publics en service.","La nationalité n'entre pas en ligne de compte."],
        e:"L'obligation de neutralité pèse sur les agents publics : ils ne peuvent afficher leurs convictions religieuses au travail. Les usagers, eux, gardent leur liberté d'expression religieuse, dans le respect de la loi." },
   en:{ q:"Who must respect and uphold religious neutrality in public services?",
-       c:["Users only","Public officials while carrying out their duties","Elected representatives only","Foreign visitors"],
+       c:["Users only","Public officials while carrying out their duties","Elected representatives only","Foreign visitors"], w:["It is the other way round: users keep their freedom of religious expression; it is officials who must be neutral.",null,"Elected officials are covered, but the duty applies to all public officials on duty.","Nationality has nothing to do with it."],
        e:"The duty of neutrality falls on public officials: they may not display religious beliefs at work. Users keep their freedom of religious expression, within the law." } },
 
 { id:'val35', cat:'valeurs', a:2,

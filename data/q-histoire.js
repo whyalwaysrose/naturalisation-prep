@@ -108,10 +108,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'his14', cat:'histoire', a:2,
   fr:{ q:"Depuis quand les Français élisent-ils le président de la République au suffrage universel direct ?",
-       c:["Depuis 1848","Depuis 1958","Depuis 1962","Depuis 1981"],
+       c:["Depuis 1848","Depuis 1958","Depuis 1962","Depuis 1981"], w:["1848 est l'année du suffrage universel masculin, pas de l'élection directe du Président sous la Ve République.","1958 est la naissance de la Ve République ; le Président était alors élu par un collège d'élus.",null,"1981 est l'élection de François Mitterrand, pas un changement de mode de scrutin."],
        e:"Le référendum de 1962, voulu par de Gaulle, instaure l'élection du Président au suffrage universel direct. La première élection sous ce régime a lieu en 1965." },
   en:{ q:"Since when have the French elected the President by direct universal suffrage?",
-       c:["Since 1848","Since 1958","Since 1962","Since 1981"],
+       c:["Since 1848","Since 1958","Since 1962","Since 1981"], w:["1848 brought universal male suffrage, not direct election of the President under the Fifth Republic.","1958 founded the Fifth Republic; the President was then chosen by a college of officials.",null,"1981 was Mitterrand's election, not a change in how the President is chosen."],
        e:"The 1962 referendum, driven by de Gaulle, introduced election of the President by direct universal suffrage. The first such election was held in 1965." } },
 
 { id:'his15', cat:'histoire', a:3,
@@ -180,10 +180,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'his23', cat:'histoire', a:1,
   fr:{ q:"Depuis quand l'esclavage a-t-il été aboli en France ?",
-       c:["Depuis 1789","Depuis 1848","Depuis 1905","Depuis 1946"],
+       c:["Depuis 1789","Depuis 1848","Depuis 1905","Depuis 1946"], w:["La Révolution abolit l'esclavage en 1794, mais Napoléon le rétablit en 1802 : l'abolition de 1794 n'a pas tenu.",null,"1905 est la loi de séparation des Églises et de l'État.","1946 est la loi de départementalisation des colonies."],
        e:"Aboli une première fois en 1794, l'esclavage fut rétabli par Napoléon en 1802. Son abolition définitive date du décret du 27 avril 1848." },
   en:{ q:"Since when has slavery been abolished in France?",
-       c:["Since 1789","Since 1848","Since 1905","Since 1946"],
+       c:["Since 1789","Since 1848","Since 1905","Since 1946"], w:["The Revolution abolished slavery in 1794, but Napoleon restored it in 1802: that abolition did not hold.",null,"1905 is the law separating churches and State.","1946 is the law turning colonies into departments."],
        e:"First abolished in 1794, slavery was reinstated by Napoleon in 1802. Its definitive abolition dates from the decree of 27 April 1848." } },
 
 { id:'his24', cat:'histoire', a:0,
@@ -220,10 +220,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'his28', cat:'histoire', a:1,
   fr:{ q:"En quelle année l'euro est-il devenu la monnaie officielle de la France ?",
-       c:["En 1992","En 2002","En 1999","En 2010"],
+       c:["En 1992","En 2002","En 1999","En 2010"], w:["1992 est la signature du traité de Maastricht, qui prépare l'euro sans le mettre en circulation.",null,"1999 est la création de l'euro comme monnaie de compte : ni pièces ni billets avant 2002.",null],
        e:"Les pièces et billets en euros sont entrés en circulation le 1er janvier 2002, remplaçant le franc. L'euro existait déjà comme monnaie de compte depuis 1999." },
   en:{ q:"In what year did the euro become France's official currency?",
-       c:["1992","2002","1999","2010"],
+       c:["1992","2002","1999","2010"], w:["1992 is the Maastricht Treaty, which prepared the euro without putting it into circulation.",null,"1999 created the euro as an accounting currency: no notes or coins until 2002.",null],
        e:"Euro notes and coins entered circulation on 1 January 2002, replacing the franc. The euro had existed as an accounting currency since 1999." } },
 
 { id:'his29', cat:'histoire', a:2,
@@ -548,10 +548,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'his69', cat:'histoire', a:2,
   fr:{ q:"Combien y a-t-il de régions en France métropolitaine ?",
-       c:["22","18","13","26"],
+       c:["22","18","13","26"], w:["22 était le nombre de régions métropolitaines avant la réforme de 2016.","18 est le total avec les cinq régions d'outre-mer.",null,null],
        e:"Depuis la réforme territoriale de 2016, la France métropolitaine compte 13 régions, contre 22 auparavant. Avec les cinq régions d'outre-mer, le total est de 18." },
   en:{ q:"How many regions are there in mainland France?",
-       c:["22","18","13","26"],
+       c:["22","18","13","26"], w:["22 was the number of mainland regions before the 2016 reform.","18 is the total including the five overseas regions.",null,null],
        e:"Since the 2016 territorial reform, mainland France has 13 regions, down from 22. Including the five overseas regions, the total is 18." } },
 
 { id:'his70', cat:'histoire', a:3,

@@ -252,10 +252,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'soc32', cat:'societe', a:2,
   fr:{ q:"L'instruction des enfants est obligatoire de :",
-       c:["6 à 16 ans","3 à 18 ans","3 à 16 ans","6 à 18 ans"],
+       c:["6 à 16 ans","3 à 18 ans","3 à 16 ans","6 à 18 ans"], w:["6 ans était l'âge d'entrée dans l'obligation avant la réforme de 2019, qui l'a abaissé à 3 ans.","L'instruction est obligatoire jusqu'à 16 ans ; c'est la formation qui se prolonge jusqu'à 18.",null,"L'obligation commence désormais à 3 ans, pas à 6."],
        e:"Depuis la rentrée 2019, l'instruction est obligatoire dès 3 ans et jusqu'à 16 ans. De 16 à 18 ans s'ajoute une obligation de formation." },
   en:{ q:"Education of children is compulsory from:",
-       c:["6 to 16","3 to 18","3 to 16","6 to 18"],
+       c:["6 to 16","3 to 18","3 to 16","6 to 18"], w:["6 was the starting age before the 2019 reform lowered it to 3.","Education is compulsory to 16; it is training that continues to 18.",null,"The obligation now starts at 3, not 6."],
        e:"Since the 2019 school year, education has been compulsory from age 3 to 16. From 16 to 18 there is an additional obligation to be in training." } },
 
 { id:'soc33', cat:'societe', a:3,
@@ -332,10 +332,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'soc42', cat:'societe', a:1,
   fr:{ q:"Depuis le 1er juillet 2021, quelle est la durée du congé paternité ?",
-       c:["11 jours","25 jours, auxquels s'ajoutent 3 jours de congé de naissance","14 jours","2 mois"],
+       c:["11 jours","25 jours, auxquels s'ajoutent 3 jours de congé de naissance","14 jours","2 mois"], w:["11 jours était la durée avant la réforme du 1er juillet 2021.",null,null,"Le congé parental peut durer des mois, mais ce n'est pas le congé de paternité."],
        e:"Le congé de paternité et d'accueil de l'enfant est passé de 11 à 25 jours calendaires en 2021 (32 jours en cas de naissances multiples). Sept jours sont obligatoires." },
   en:{ q:"Since 1 July 2021, how long is paternity leave?",
-       c:["11 days","25 days, plus 3 days of birth leave","14 days","2 months"],
+       c:["11 days","25 days, plus 3 days of birth leave","14 days","2 months"], w:["11 days was the length before the reform of 1 July 2021.",null,null,"Parental leave can run for months, but that is not paternity leave."],
        e:"Paternity and childcare leave rose from 11 to 25 calendar days in 2021 (32 for multiple births). Seven days are compulsory." } },
 
 { id:'soc43', cat:'societe', a:2,

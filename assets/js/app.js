@@ -44,7 +44,7 @@
   /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
      a phone, whether the page being looked at is the current build or a cached
      one — the usual cause of "the buttons stopped working". */
-  const BUILD = '2026.09.15-21';
+  const BUILD = '2026.09.15-22';
 
   /* ---------------- i18n ---------------- */
   const T = {
@@ -783,8 +783,13 @@
       const right = item.picked === q.a;
       fb.hidden = false;
       fb.className = 'feedback ' + (right ? 'ok' : 'bad');
+      /* If we have written a note for the specific option they chose, lead with
+         that: on a second or third showing, "the answer is D because…" does not
+         tell someone what was wrong with the B they keep picking. */
+      const why = (!right && loc.w && loc.w[item.picked]) ? loc.w[item.picked] : null;
       fb.innerHTML = '<div class="fb-head">' + (right ? '✓ ' : '✕ ') +
         esc(right ? TT().correct : TT().incorrect) + '</div>' +
+        (why ? '<div class="fb-why">' + esc(why) + '</div>' : '') +
         '<div class="fb-body">' + esc(loc.e) + '</div>';
     } else { fb.hidden = true; }
 
@@ -946,8 +951,12 @@
 
         let detail = '';
         if (!right) {
+          // After an exam there was no feedback at the time, so the note about
+          // the option they picked matters more here than anywhere.
+          const whyNot = (!skipped && loc.w && loc.w[it.picked]) ? loc.w[it.picked] : null;
           detail += '<div class="rv-ans yours-bad"><span class="rv-lbl">' + esc(t.yourAns) + '</span>' +
-            esc(skipped ? t.noAns : loc.c[it.picked]) + '</div>';
+            esc(skipped ? t.noAns : loc.c[it.picked]) +
+            (whyNot ? '<div class="rv-why">' + esc(whyNot) + '</div>' : '') + '</div>';
         }
         detail += '<div class="rv-ans correct"><span class="rv-lbl">' + esc(t.goodAns) + '</span>' +
           esc(loc.c[q.a]) + '</div>' +

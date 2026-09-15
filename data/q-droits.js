@@ -132,10 +132,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'dro17', cat:'droits', a:1,
   fr:{ q:"À quel âge est la majorité numérique en France ?",
-       c:["13 ans","15 ans","16 ans","18 ans"],
+       c:["13 ans","15 ans","16 ans","18 ans"], w:["13 ans est l'âge minimum fixé par plusieurs plateformes, pas la majorité numérique française.",null,"16 ans est le seuil retenu par le règlement européen ; la France a fixé 15 ans.","18 ans est la majorité civile, pas la majorité numérique."],
        e:"Depuis la loi de 2023, un mineur de moins de 15 ans ne peut s'inscrire seul sur un réseau social : l'accord d'un parent est requis." },
   en:{ q:"What is the age of digital majority in France?",
-       c:["13","15","16","18"],
+       c:["13","15","16","18"], w:["13 is the minimum set by several platforms, not the French digital age of majority.",null,"16 is the threshold in the European regulation; France set 15.","18 is civil majority, not digital majority."],
        e:"Under the 2023 law, a minor under 15 cannot sign up to a social network alone: a parent's consent is required." } },
 
 { id:'dro18', cat:'droits', a:2,
@@ -260,10 +260,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'dro33', cat:'droits', a:3,
   fr:{ q:"Quelle est l'infraction la plus grave ?",
-       c:["La contravention","L'infraction routière","Le délit","Le crime"],
+       c:["La contravention","L'infraction routière","Le délit","Le crime"], w:["La contravention est l'infraction la plus légère, pas la plus grave.","Une infraction routière peut être une contravention ou un délit, jamais la catégorie la plus grave.","Le délit est intermédiaire : plus grave que la contravention, moins que le crime.",null],
        e:"Le droit pénal français distingue trois niveaux : la contravention (la plus légère), le délit (vol, escroquerie) et le crime (meurtre, viol), jugé par la cour d'assises." },
   en:{ q:"Which is the most serious category of offence?",
-       c:["The contravention (petty offence)","A traffic offence","The délit (misdemeanour)","The crime (felony)"],
+       c:["The contravention (petty offence)","A traffic offence","The délit (misdemeanour)","The crime (felony)"], w:["The contravention is the least serious category, not the most.","A traffic offence may be a contravention or a délit, never the most serious category.","The délit sits in the middle: worse than a contravention, less than a crime.",null],
        e:"French criminal law has three levels: contravention (least serious), délit (theft, fraud) and crime (murder, rape), tried by the assize court." } },
 
 { id:'dro34', cat:'droits', a:0,

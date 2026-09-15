@@ -58,10 +58,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'sit02', cat:'valeurs', sit:true, a:1,
   fr:{ q:"Vous êtes agent d'accueil dans une mairie. Un usager vous demande de retirer la petite croix que vous portez autour du cou. Que faites-vous ?",
-       c:["Vous refusez, votre liberté religieuse primant sur la demande d'un usager","Vous la portez sous vos vêtements pendant votre service","Vous orientez l'usager vers un collègue pour éviter tout incident","Vous la conservez visible mais notez la réclamation au registre"],
+       c:["Vous refusez, votre liberté religieuse primant sur la demande d'un usager","Vous la portez sous vos vêtements pendant votre service","Vous orientez l'usager vers un collègue pour éviter tout incident","Vous la conservez visible mais notez la réclamation au registre"], w:["La liberté religieuse de l'agent cède devant l'obligation de neutralité pendant le service.",null,"Changer d'agent validerait l'idée qu'un usager peut choisir qui le reçoit.","Le signe doit cesser d'être visible, pas être revendiqué."],
        e:"L'obligation de neutralité s'impose aux agents publics pendant leur service : aucun signe religieux ne doit être visible, indépendamment de la demande d'un usager. Cette obligation ne pèse en revanche jamais sur les usagers, qui restent libres de manifester leurs convictions." },
   en:{ q:"You work at a town hall reception desk. A member of the public asks you to remove the small cross you wear round your neck. What do you do?",
-       c:["Refuse, since your religious freedom outweighs a user's request","Wear it under your clothes while you are on duty","Direct the user to a colleague to avoid an incident","Keep it visible but log the complaint in the register"],
+       c:["Refuse, since your religious freedom outweighs a user's request","Wear it under your clothes while you are on duty","Direct the user to a colleague to avoid an incident","Keep it visible but log the complaint in the register"], w:["An official's religious freedom yields to the duty of neutrality while on duty.",null,"Switching officials would endorse the idea that a user may choose who serves them.","The sign must stop being visible, not be defended."],
        e:"The duty of neutrality binds public officials while on duty: no religious sign may be visible, regardless of any user's request. That duty never falls on users, who remain free to show their beliefs." } },
 
 { id:'sit03', cat:'valeurs', sit:true, a:3,
@@ -186,10 +186,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'sit18', cat:'valeurs', sit:true, a:0,
   fr:{ q:"Une mère portant un foulard souhaite accompagner la sortie scolaire de sa fille. Un parent s'y oppose au nom de la laïcité. Que dit le droit ?",
-       c:["Les parents accompagnateurs sont des usagers, non des agents publics","Toute personne encadrant des élèves est tenue à la neutralité","Elle peut accompagner à condition de retirer son foulard","L'accompagnement est réservé aux parents élus délégués"],
+       c:["Les parents accompagnateurs sont des usagers, non des agents publics","Toute personne encadrant des élèves est tenue à la neutralité","Elle peut accompagner à condition de retirer son foulard","L'accompagnement est réservé aux parents élus délégués"], w:[null,"La neutralité ne s'étend pas à quiconque encadre des élèves : elle vise les agents publics.","Aucune règle n'impose de retirer un foulard pour accompagner une sortie.","L'accompagnement n'est pas réservé aux parents élus."],
        e:"L'obligation de neutralité pèse sur les agents publics, pas sur les usagers. Le Conseil d'État considère les parents accompagnateurs bénévoles comme des usagers : leur participation peut être encadrée au cas par cas, mais pas interdite par principe." },
   en:{ q:"A mother wearing a headscarf wants to help supervise her daughter's school trip. Another parent objects, citing laïcité. What does the law say?",
-       c:["Accompanying parents are users, not public officials","Anyone supervising pupils is bound by the neutrality duty","She may come provided she removes her headscarf","Only elected parent representatives may accompany trips"],
+       c:["Accompanying parents are users, not public officials","Anyone supervising pupils is bound by the neutrality duty","She may come provided she removes her headscarf","Only elected parent representatives may accompany trips"], w:[null,"Neutrality does not extend to anyone supervising pupils: it binds public officials.","No rule requires removing a headscarf to help on a trip.","Accompanying is not reserved for elected parent representatives."],
        e:"The neutrality duty falls on public officials, not users. The Conseil d'État treats volunteer accompanying parents as users: their participation may be regulated case by case, but not banned as a matter of principle." } },
 
 { id:'sit19', cat:'valeurs', sit:true, a:2,
@@ -234,28 +234,28 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'sit44', cat:'valeurs', sit:true, a:1,
   fr:{ q:"Un voisin affirme que la laïcité interdit de porter un signe religieux dans la rue. A-t-il raison ?",
-       c:["Oui : aucun signe religieux ne peut être visible dans l'espace public","Non : la laïcité s'impose à l'État et à ses agents, pas aux particuliers","Oui, sauf pendant les principales fêtes religieuses de l'année","Non, mais seulement pour les personnes de nationalité française"],
+       c:["Oui : aucun signe religieux ne peut être visible dans l'espace public","Non : la laïcité s'impose à l'État et à ses agents, pas aux particuliers","Oui, sauf pendant les principales fêtes religieuses de l'année","Non, mais seulement pour les personnes de nationalité française"], w:["C'est la confusion la plus répandue : la laïcité encadre l'État, pas la tenue des passants.",null,"Aucune exception de ce type n'existe.","La règle ne dépend pas de la nationalité."],
        e:"La laïcité impose la neutralité de l'État et de ses agents. Les particuliers restent libres de manifester leurs convictions dans l'espace public. Une exception vise la dissimulation du visage, interdite depuis 2010 pour des motifs d'ordre public." },
   en:{ q:"A neighbour claims that laïcité bans wearing a religious sign in the street. Is he right?",
-       c:["Yes: no religious sign may be visible in public space","No: laïcité binds the State and its officials, not private individuals","Yes, except during the main religious festivals of the year","No, but only in the case of French nationals"],
+       c:["Yes: no religious sign may be visible in public space","No: laïcité binds the State and its officials, not private individuals","Yes, except during the main religious festivals of the year","No, but only in the case of French nationals"], w:["This is the most widespread confusion: laïcité constrains the State, not what passers-by wear.",null,"No such exception exists.","The rule does not depend on nationality."],
        e:"Laïcité requires neutrality of the State and its officials. Private individuals remain free to show their beliefs in public. One exception is concealing the face, banned since 2010 on public-order grounds." } },
 
 { id:'sit45', cat:'valeurs', sit:true, a:2,
   fr:{ q:"Des parents demandent que la cantine de l'école publique ne serve que des repas conformes à leur religion. Que répond la commune ?",
-       c:["Elle doit accepter, au titre du libre exercice du culte","Elle doit fermer le service pour prévenir tout différend","Elle n'y est pas tenue : un service public ne suit aucune religion","Elle doit soumettre la question au vote des parents d'élèves"],
+       c:["Elle doit accepter, au titre du libre exercice du culte","Elle doit fermer le service pour prévenir tout différend","Elle n'y est pas tenue : un service public ne suit aucune religion","Elle doit soumettre la question au vote des parents d'élèves"], w:["La liberté de culte n'oblige pas un service public à s'aligner sur une religion.","Supprimer le service pénalise tout le monde et ne règle rien.",null,"Un vote ne peut pas créer une obligation religieuse pour un service public."],
        e:"La cantine est un service public facultatif. Aucune obligation religieuse ne peut lui être imposée, mais rien n'interdit à une commune de proposer un menu sans porc ou végétarien : c'est un choix local d'organisation, jamais un droit opposable." },
   en:{ q:"Parents ask that the state school canteen serve only meals conforming to their religion. What does the commune reply?",
-       c:["It must agree, under freedom of worship","It must close the service to head off any dispute","It is not obliged to: a public service follows no religion","It must put the question to a vote of parents"],
+       c:["It must agree, under freedom of worship","It must close the service to head off any dispute","It is not obliged to: a public service follows no religion","It must put the question to a vote of parents"], w:["Freedom of worship does not oblige a public service to follow a religion.","Closing the service penalises everyone and settles nothing.",null,"A vote cannot create a religious obligation for a public service."],
        e:"The canteen is an optional public service. No religious requirement can be imposed on it, but nothing stops a commune offering a pork-free or vegetarian option: that is a local organisational choice, never an enforceable right." } },
 
 /* ---------- DROITS ET DEVOIRS ---------- */
 
 { id:'sit21', cat:'droits', sit:true, a:2,
   fr:{ q:"Vous êtes témoin d'un accident de la route avec des blessés. Que devez-vous faire ?",
-       c:["Poursuivre votre route pour laisser la voie libre aux secours","Sortir les blessés des véhicules avant l'arrivée des pompiers","Alerter les secours (15, 18 ou 112) et sécuriser les lieux","Relever les plaques et attendre l'arrivée d'un autre témoin"],
+       c:["Poursuivre votre route pour laisser la voie libre aux secours","Sortir les blessés des véhicules avant l'arrivée des pompiers","Alerter les secours (15, 18 ou 112) et sécuriser les lieux","Relever les plaques et attendre l'arrivée d'un autre témoin"], w:["Passer son chemin, c'est une non-assistance à personne en danger : cinq ans d'emprisonnement.","Déplacer un blessé peut aggraver une lésion : on ne le fait qu'en cas de danger immédiat.",null,"Attendre un autre témoin, c'est retarder l'alerte, qui est précisément ce qui est exigé."],
        e:"Porter secours est une obligation légale : la non-assistance à personne en danger est punie de cinq ans d'emprisonnement et 75 000 € d'amende. Il ne faut pas déplacer un blessé sauf danger immédiat, mais il faut toujours alerter." },
   en:{ q:"You witness a road accident with injuries. What must you do?",
-       c:["Drive on to leave the road clear for the emergency services","Pull the injured from the vehicles before the fire crew arrives","Call the emergency services (15, 18 or 112) and make the scene safe","Note the registration plates and wait for another witness"],
+       c:["Drive on to leave the road clear for the emergency services","Pull the injured from the vehicles before the fire crew arrives","Call the emergency services (15, 18 or 112) and make the scene safe","Note the registration plates and wait for another witness"], w:["Driving on is failure to assist a person in danger: five years' imprisonment.","Moving an injured person can worsen an injury: only do so if there is immediate danger.",null,"Waiting for another witness delays the alert, which is exactly what is required."],
        e:"Helping is a legal obligation: failing to assist a person in danger carries five years' imprisonment and a €75,000 fine. Do not move an injured person unless there is immediate danger, but always raise the alarm." } },
 
 { id:'sit22', cat:'droits', sit:true, a:0,
@@ -356,10 +356,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'sit34', cat:'droits', sit:true, a:3,
   fr:{ q:"Vous êtes en profond désaccord avec une loi qui vient d'être votée. Que pouvez-vous faire ?",
-       c:["Ne pas l'appliquer, dès lors que vous la jugez manifestement injuste","Demander vous-même à un juge d'en prononcer l'annulation","Ne l'appliquer que dans les situations qui vous concernent","La contester par le vote, le débat ou la justice, mais la respecter"],
+       c:["Ne pas l'appliquer, dès lors que vous la jugez manifestement injuste","Demander vous-même à un juge d'en prononcer l'annulation","Ne l'appliquer que dans les situations qui vous concernent","La contester par le vote, le débat ou la justice, mais la respecter"], w:["Juger une loi injuste ne dispense pas de l'appliquer : c'est le principe même de l'État de droit.","Un particulier ne peut pas demander seul l'annulation d'une loi.","La loi ne s'applique pas à la carte selon qu'elle vous concerne ou non.",null],
        e:"Dans un État de droit, la loi s'impose à tous, y compris à ceux qui la contestent. Les moyens de la faire changer sont démocratiques : élections, débat public, pétitions, action associative et recours devant les juridictions compétentes." },
   en:{ q:"You strongly disagree with a law that has just been passed. What can you do?",
-       c:["Ignore it, since you consider it manifestly unjust","Ask a judge yourself to strike the law down","Apply it only in the situations that concern you","Challenge it by voting, debate or the courts, but obey it"],
+       c:["Ignore it, since you consider it manifestly unjust","Ask a judge yourself to strike the law down","Apply it only in the situations that concern you","Challenge it by voting, debate or the courts, but obey it"], w:["Thinking a law unjust does not excuse you from it: that is what the rule of law means.","A private individual cannot single-handedly ask for a law to be struck down.","The law is not applied selectively depending on whether it affects you.",null],
        e:"Under the rule of law, the law binds everyone, including those who oppose it. The means of changing it are democratic: elections, public debate, petitions, campaigning and challenges before the competent courts." } },
 
 { id:'sit35', cat:'droits', sit:true, a:0,
@@ -428,10 +428,10 @@ QUESTIONS.push.apply(QUESTIONS, [
 
 { id:'sit48', cat:'droits', sit:true, a:0,
   fr:{ q:"Votre voisin, ressortissant d'un pays de l'Union européenne installé en France, vous demande s'il peut voter. Que lui répondez-vous ?",
-       c:["Qu'il vote aux municipales et aux européennes, mais pas au national","Qu'il peut voter à l'ensemble des élections organisées en France","Qu'aucun scrutin français ne lui est ouvert avant naturalisation","Qu'il peut voter s'il justifie de cinq ans de résidence en France"],
+       c:["Qu'il vote aux municipales et aux européennes, mais pas au national","Qu'il peut voter à l'ensemble des élections organisées en France","Qu'aucun scrutin français ne lui est ouvert avant naturalisation","Qu'il peut voter s'il justifie de cinq ans de résidence en France"], w:[null,"Les scrutins nationaux — présidentielle et législatives — restent réservés aux citoyens français.","La citoyenneté européenne ouvre bien deux scrutins locaux et européens.","Aucune condition de durée de résidence n'est exigée pour ces scrutins."],
        e:"La citoyenneté européenne, créée par le traité de Maastricht en 1992, ouvre aux ressortissants de l'Union résidant en France le droit de vote et d'éligibilité aux élections municipales et européennes. Les scrutins nationaux restent réservés aux Français." },
   en:{ q:"Your neighbour, an EU national living in France, asks whether he can vote. What do you tell him?",
-       c:["That he votes in municipal and European elections, but not national ones","That he may vote in every election held in France","That no French election is open to him before naturalisation","That he may vote if he shows five years of residence in France"],
+       c:["That he votes in municipal and European elections, but not national ones","That he may vote in every election held in France","That no French election is open to him before naturalisation","That he may vote if he shows five years of residence in France"], w:[null,"National elections — presidential and legislative — remain for French citizens only.","European citizenship does open two elections: municipal and European.","No length-of-residence condition applies to those elections."],
        e:"European citizenship, created by the Maastricht Treaty in 1992, gives EU nationals resident in France the right to vote and stand in municipal and European elections. National elections remain reserved for French citizens." } },
 
 { id:'sit49', cat:'droits', sit:true, a:3,

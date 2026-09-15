@@ -103,7 +103,7 @@ Two reasons the questions you meet may not all be in this bank:
 2. **The list can change.** Article 3 requires the knowledge questions to be
    published, but the arrêté sets no schedule and gives no guarantee of
    permanence. The copy archived in `docs/` was verified byte-identical to the
-   live Ministry file on 26 August 2026 — re-check before your exam.
+   live Ministry file on 15 September 2026 — re-check before your exam.
 
 Separate published lists exist for the **carte de séjour pluriannuelle** and the
 **carte de résident**. Those are different exams; this bank is the naturalisation

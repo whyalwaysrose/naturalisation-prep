@@ -44,7 +44,7 @@
   /* Bumped on every deploy. Shown in the footer so it is possible to tell, from
      a phone, whether the page being looked at is the current build or a cached
      one — the usual cause of "the buttons stopped working". */
-  const BUILD = '2026.09.15-22';
+  const BUILD = '2026.09.15-23';
 
   /* ---------------- i18n ---------------- */
   const T = {
@@ -87,6 +87,7 @@
       srsMastered:function(n,t){return n+' question'+(n>1?'s':'')+' sur '+t+' bien mémorisée'+(n>1?'s':'');},
       srsSeen:function(n,t){return n+' question'+(n>1?'s':'')+' sur '+t+' déjà rencontrée'+(n>1?'s':'');},
       timeUp:'Temps écoulé',
+      timeLeft:function(m){return 'Il reste '+m+' minute'+(m>1?'s':'');},
       resumeCardT:'Reprendre où vous en étiez',
       sheetT:'Session en cours', sheetResume:'Reprendre', sheetRestart:'Recommencer à zéro',
       sheetCancel:'Annuler',
@@ -145,6 +146,7 @@
       srsMastered:function(n,t){return n+' of '+t+' questions well retained';},
       srsSeen:function(n,t){return n+' of '+t+' questions seen so far';},
       timeUp:'Time is up',
+      timeLeft:function(m){return m+' minute'+(m>1?'s':'')+' remaining';},
       resumeCardT:'Pick up where you left off',
       sheetT:'Session in progress', sheetResume:'Resume', sheetRestart:'Start over',
       sheetCancel:'Cancel',
@@ -233,6 +235,16 @@
 
   /* Always returns a valid string table, whatever `lang` holds. */
   function TT() { return T[lang] || T.fr; }
+
+  /* Answering a question and moving between screens change nothing a screen
+     reader would notice on its own, so the important moments are spoken here.
+     The blank-then-set forces a re-announcement when the text is unchanged. */
+  function announce(msg) {
+    const a = document.getElementById('sr');
+    if (!a || !msg) return;
+    a.textContent = '';
+    setTimeout(function () { a.textContent = msg; }, 60);
+  }
 
   const $  = function (s, r) { return (r || document).querySelector(s); };
   const $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -473,12 +485,39 @@
     $('#sheetCancel').textContent  = t.sheetCancel;
     $('#sheet').hidden = false;
     document.body.classList.add('sheet-open');
+    sheetReturn = document.activeElement;
+    const firstBtn = $('#sheetResume');
+    if (firstBtn) setTimeout(function () { firstBtn.focus(); }, 30);
+  }
+
+  /* Focus has to enter a modal and not escape it, and must come back to
+     whatever opened it once it closes. */
+  let sheetReturn = null;
+
+  function trapTab(e) {
+    if (e.key !== 'Tab') return;
+    const f = $$('#sheet button');
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
   }
 
   function closeSheet() {
     $('#sheet').hidden = true;
     document.body.classList.remove('sheet-open');
     pendingStart = null;
+    /* Return focus to whatever opened the dialog. If that element has since been
+       hidden or removed — the screen behind may have changed — focus would fall
+       to <body> and strand a keyboard user, so fall back to the first control on
+       the screen now showing. */
+    let back = sheetReturn;
+    if (!back || !document.contains(back) || back.offsetParent === null) {
+      const scr = $('#screen-' + (document.body.dataset.screen || 'home'));
+      back = (scr && scr.querySelector('button, [href], input, summary')) || $('#btnBack');
+    }
+    if (back && back.focus) { try { back.focus(); } catch (e) {} }
+    sheetReturn = null;
   }
 
   /* ---------------- Analytics ----------------
@@ -527,6 +566,7 @@
     $('#hdrTitle').textContent = TITLES[name] ? TITLES[name]() : 'Examen civique';
     window.scrollTo(0, 0);
     document.body.dataset.screen = name;
+    if (name !== 'quiz') announce($('#hdrTitle').textContent);
     track(name === 'quiz' && mode ? 'quiz/' + mode : name);
   }
 
@@ -731,8 +771,10 @@
   }
 
   /* ---------------- Timer ---------------- */
+  let lastMark = null;
   function startTimer(seconds) {
     stopTimer();
+    lastMark = null;
     endsAt = Date.now() + seconds * 1000;
     $('#qTimer').hidden = false;
     tick();
@@ -750,11 +792,23 @@
     const m = Math.floor(left / 60), s = left % 60;
     el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
     el.classList.toggle('warn', left <= 300);
+    /* The clock updates four times a second; announcing that would be unusable.
+       Milestones only, once each. */
+    [600, 300, 60].forEach(function (mark) {
+      if (left === mark && lastMark !== mark) {
+        lastMark = mark;
+        announce(TT().timeLeft(Math.round(mark / 60)));
+      }
+    });
     if (left <= 0) { stopTimer(); finish(true); }
   }
 
   /* ---------------- Question rendering ---------------- */
-  function renderQuestion() {
+  /* `newQuestion` false means we are re-rendering the same question after an
+     answer: focus must stay where the user put it and the result is announced
+     instead, rather than re-reading the question over the top of it. */
+  function renderQuestion(newQuestion) {
+    if (newQuestion === undefined) newQuestion = true;
     const item = deck[idx], q = item.q, loc = L(q), c = cat(q.cat);
     const answered = item.picked !== null;
     const showFeedback = (mode !== 'exam') && answered;
@@ -766,6 +820,9 @@
     $('#qText').textContent = loc.q;
 
     const keys = ['A','B','C','D'];
+    /* A radiogroup should be one tab stop, with arrows moving between options.
+       Without a roving tabindex the role promises behaviour the widget lacks. */
+    const focusPos = item.picked !== null ? item.order.indexOf(item.picked) : 0;
     $('#qChoices').innerHTML = item.order.map(function (orig, pos) {
       let cls = 'choice';
       if (showFeedback) {
@@ -773,6 +830,7 @@
         else if (orig === item.picked) cls += ' bad';
       } else if (item.picked === orig) { cls += ' sel'; }
       return '<button class="' + cls + '" data-orig="' + orig + '" role="radio" ' +
+        'tabindex="' + (pos === focusPos ? '0' : '-1') + '" ' +
         'aria-checked="' + (item.picked === orig) + '"' + (showFeedback ? ' disabled' : '') + '>' +
         '<span class="choice-key">' + keys[pos] + '</span>' +
         '<span class="choice-txt">' + esc(loc.c[orig]) + '</span></button>';
@@ -798,6 +856,28 @@
     const nx = $('#btnNext');
     nx.textContent = last ? (mode === 'exam' ? TT().seeResults : TT().finish) : TT().next;
     nx.disabled = (mode !== 'exam') && !answered;
+
+    if (newQuestion) {
+      /* Focusing the question makes the screen reader read it, which is what a
+         sighted user gets for free when the screen changes. */
+      const qt = $('#qText');
+      if (qt && document.body.dataset.screen === 'quiz') qt.focus();
+    } else {
+      /* Answering re-renders the options, which destroys the focused button and
+         drops focus to <body> — leaving a keyboard user stranded at the top of
+         the document. Put focus somewhere deliberate instead. */
+      if (showFeedback) {
+        const right = item.picked === q.a;
+        const why = (!right && loc.w && loc.w[item.picked]) ? loc.w[item.picked] + ' ' : '';
+        announce((right ? TT().correct : TT().incorrect) + '. ' + why + loc.e);
+        const nxt = $('#btnNext');           // the result is spoken; focus the way onward
+        if (nxt && !nxt.disabled) nxt.focus();
+      } else {
+        // Exam mode: no feedback, options stay live — go back to the one chosen.
+        const again = $('#qChoices .choice[data-orig="' + item.picked + '"]');
+        if (again) again.focus();
+      }
+    }
   }
 
   function pick(orig) {
@@ -809,7 +889,7 @@
       recordWrong(item.q, orig === item.q.a);
       recordSRS(item.q, orig === item.q.a);
     }
-    renderQuestion();
+    renderQuestion(false);
     saveSession();
   }
 
@@ -963,8 +1043,11 @@
           '<div class="rv-exp">' + esc(loc.e) + '</div>';
 
         return '<div class="rv-item ' + cls + (right ? '' : ' open') + '">' +
-          '<div class="rv-head"><span class="rv-mark">' + mark + '</span>' +
-          '<span class="rv-q">' + esc(loc.q) + '</span><span class="rv-chev">▾</span></div>' +
+          '<button class="rv-head" aria-expanded="' + (right ? 'false' : 'true') + '">' +
+          '<span class="rv-mark" aria-hidden="true">' + mark + '</span>' +
+          '<span class="sr-only">' + esc(right ? t.correct : t.incorrect) + '. </span>' +
+          '<span class="rv-q">' + esc(loc.q) + '</span>' +
+          '<span class="rv-chev" aria-hidden="true">▾</span></button>' +
           '<div class="rv-detail">' + detail + '</div></div>';
       }).join('');
     });
@@ -1057,7 +1140,11 @@
     if (fBtn) { reviewFilter = fBtn.dataset.f; syncFilter(); renderReview(); return; }
 
     const rvHead = e.target.closest('.rv-head');
-    if (rvHead) { rvHead.parentNode.classList.toggle('open'); return; }
+    if (rvHead) {
+      const open = rvHead.parentNode.classList.toggle('open');
+      rvHead.setAttribute('aria-expanded', open ? 'true' : 'false');
+      return;
+    }
 
     if (e.target.closest('#btnBack')) { back(); return; }
   });
@@ -1088,8 +1175,30 @@
   // Keyboard shortcuts — helpful on desktop, harmless on mobile
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !$('#sheet').hidden) { closeSheet(); return; }
-    if (!$('#sheet').hidden) return;                 // sheet swallows quiz keys
+    if (!$('#sheet').hidden) {
+      trapTab(e);
+      return;                                        // sheet swallows quiz keys
+    }
     if (document.body.dataset.screen !== 'quiz') return;
+
+    /* Arrow keys move between options when focus is inside the radiogroup,
+       as the radio role leads a screen-reader user to expect. */
+    const inGroup = document.activeElement && document.activeElement.closest &&
+                    document.activeElement.closest('#qChoices');
+    if (inGroup && ['ArrowDown','ArrowUp','ArrowRight','ArrowLeft','Home','End'].indexOf(e.key) > -1) {
+      const btns = $$('#qChoices .choice').filter(function (b) { return !b.disabled; });
+      if (!btns.length) return;
+      const at = btns.indexOf(document.activeElement);
+      let to;
+      if (e.key === 'Home') to = 0;
+      else if (e.key === 'End') to = btns.length - 1;
+      else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') to = (at + 1 + btns.length) % btns.length;
+      else to = (at - 1 + btns.length) % btns.length;
+      btns.forEach(function (b, i) { b.tabIndex = i === to ? 0 : -1; });
+      btns[to].focus();
+      e.preventDefault();
+      return;
+    }
     if (e.key >= '1' && e.key <= '4') {
       const b = $$('#qChoices .choice')[Number(e.key) - 1];
       if (b && !b.disabled) b.click();

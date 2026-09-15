@@ -35,7 +35,7 @@
 <meta name="twitter:title" content="Examen civique — entraînement gratuit à la naturalisation">
 <meta name="twitter:description" content="Les 243 questions officielles, un examen blanc au format réel et une correction expliquée. Gratuit, sans publicité, sans inscription. Site non officiel.">
 <meta name="twitter:image" content="https://whyalwaysrose.github.io/naturalisation-prep/assets/og.png?v=18">
-<link rel="stylesheet" href="assets/css/style.css?v=22">
+<link rel="stylesheet" href="assets/css/style.css?v=23">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='11' height='32' fill='%230055A4'/><rect x='11' width='10' height='32' fill='%23fff'/><rect x='21' width='11' height='32' fill='%23EF4135'/></svg>">
 </head>
 <body>
@@ -50,6 +50,10 @@
     <button data-lang="en">EN</button>
   </div>
 </header>
+
+<!-- Screen readers get no page change when a question is answered or a screen
+     swaps, so anything important is announced here. -->
+<div id="sr" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <main id="main">
 
@@ -151,15 +155,15 @@
     <div class="quiz-bar">
       <div class="qb-row">
         <span class="qb-count" id="qCount">1 / 40</span>
-        <span class="qb-timer" id="qTimer" hidden>45:00</span>
+        <span class="qb-timer" id="qTimer" hidden aria-hidden="true">45:00</span>
         <span class="qb-theme" id="qTheme"></span>
       </div>
-      <div class="progress"><div class="progress-fill" id="qProgress"></div></div>
+      <div class="progress" aria-hidden="true"><div class="progress-fill" id="qProgress"></div></div>
     </div>
 
     <div class="quiz-body">
-      <p class="q-text" id="qText"></p>
-      <div class="choices" id="qChoices" role="radiogroup"></div>
+      <p class="q-text" id="qText" tabindex="-1"></p>
+      <div class="choices" id="qChoices" role="radiogroup" aria-labelledby="qText"></div>
       <div class="feedback" id="qFeedback" hidden></div>
     </div>
 
@@ -172,7 +176,7 @@
   <!-- ===================== RESULTS ===================== -->
   <section class="screen" id="screen-results">
     <div class="result-hero" id="resultHero">
-      <div class="score-ring" id="scoreRing">
+      <div class="score-ring" id="scoreRing" aria-hidden="true">
         <svg viewBox="0 0 120 120" aria-hidden="true">
           <circle class="ring-bg" cx="60" cy="60" r="52"/>
           <circle class="ring-fg" cx="60" cy="60" r="52" id="ringFg"/>
@@ -195,7 +199,7 @@
 
   <!-- ===================== REVIEW ===================== -->
   <section class="screen" id="screen-review">
-    <div class="review-filter" role="group">
+    <div class="review-filter" role="group" aria-label="Filtrer les réponses / Filter answers">
       <button data-f="all" class="on" data-t="fAll">Toutes</button>
       <button data-f="wrong" data-t="fWrong">Erreurs</button>
       <button data-f="right" data-t="fRight">Justes</button>
@@ -232,7 +236,7 @@
   window.addEventListener('load', function () {
     setTimeout(function () {
       if (!document.body.dataset.screen) {
-        show("L'application n'a pas démarré / the app did not start. Build attendu : v22.");
+        show("L'application n'a pas démarré / the app did not start. Build attendu : v23.");
       }
     }, 1200);
   });
@@ -258,13 +262,13 @@
 <script>window.goatcounter = { no_onload: true };</script>
 <script data-goatcounter="https://whyalwaysrose.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
-<script src="data/questions.js?v=22"></script>
-<script src="data/q-valeurs.js?v=22"></script>
-<script src="data/q-institutions.js?v=22"></script>
-<script src="data/q-droits.js?v=22"></script>
-<script src="data/q-histoire.js?v=22"></script>
-<script src="data/q-societe.js?v=22"></script>
-<script src="data/q-situations.js?v=22"></script>
-<script src="assets/js/app.js?v=22"></script>
+<script src="data/questions.js?v=23"></script>
+<script src="data/q-valeurs.js?v=23"></script>
+<script src="data/q-institutions.js?v=23"></script>
+<script src="data/q-droits.js?v=23"></script>
+<script src="data/q-histoire.js?v=23"></script>
+<script src="data/q-societe.js?v=23"></script>
+<script src="data/q-situations.js?v=23"></script>
+<script src="assets/js/app.js?v=23"></script>
 </body>
 </html>

@@ -48,6 +48,26 @@
 
 * { box-sizing: border-box; }
 
+/* Announced by screen readers, invisible to everyone else. Not display:none,
+   which would remove it from the accessibility tree entirely. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Keyboard users could not previously see where they were: nothing in the
+   stylesheet styled focus, and several controls reset the UA outline. */
+:focus-visible {
+  outline: 3px solid var(--bleu);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+@media (prefers-color-scheme: dark) { :focus-visible { outline-color: #7ab3ff; } }
+.app-header :focus-visible { outline-color: #fff; }
+/* The question heading takes focus programmatically when the question changes;
+   it should be read, not ringed. */
+#qText:focus { outline: none; }
+
 /* Tells the browser both themes are handled, which stops Samsung Internet and
    Chrome's "force dark" from re-inverting colours that are already dark. */
 :root { color-scheme: light dark; }
@@ -376,7 +396,8 @@ body.sheet-open { overflow: hidden; }
 .rv-item.ok  { border-left-color: var(--ok); }
 .rv-item.bad { border-left-color: var(--bad); }
 .rv-item.skip { border-left-color: var(--ink-3); }
-.rv-head { display: flex; align-items: flex-start; gap: 10px; padding: 14px; cursor: pointer; }
+.rv-head { display: flex; align-items: flex-start; gap: 10px; padding: 14px; cursor: pointer;
+  width: 100%; background: none; border: 0; font: inherit; color: inherit; text-align: left; }
 .rv-mark { flex: none; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
   font-size: 13px; font-weight: 700; color: #fff; margin-top: 1px; }
 .rv-item.ok .rv-mark  { background: var(--ok); }

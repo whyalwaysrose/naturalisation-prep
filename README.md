@@ -178,7 +178,15 @@ settles the answer, and the Ministry does not publish it.
 - **Bilingual FR/EN** — every question, option and explanation in both languages.
   French is what you will face; English is there to make sure you actually understand.
 - Answer options are **shuffled on every run**, so you learn the answer, not its position.
-- Works offline once loaded. Dark mode. Keyboard shortcuts (1–4, arrows) on desktop.
+- **Installable and genuinely offline.** Add it to your home screen and it opens
+  full-screen like an app. A service worker precaches all nine files (~250KB)
+  on the first visit, so the whole question bank works with no connection —
+  useful on the métro. Navigations are network-first, so being installed never
+  means being stuck on an old version.
+- **Usable with a screen reader and a keyboard.** Results are announced, focus
+  moves deliberately between questions, the options behave as a real radio
+  group (arrows, Home, End), and the dialog traps and restores focus.
+- Dark mode. Keyboard shortcuts (1–4, arrows) on desktop.
 
 ### The five official themes
 
